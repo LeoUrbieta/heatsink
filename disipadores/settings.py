@@ -25,7 +25,7 @@ SECRET_KEY = 'c*$v4q&l9aw-kd-f7fe@5v4qh^l^rl5de5f6n%33mw(xont-%z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['secret-brook-68426.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['heatsink-simulator.herokuapp.com','127.0.0.1']
 
 
 # Application definition
