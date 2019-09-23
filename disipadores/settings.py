@@ -22,12 +22,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'c*$v4q&l9aw-kd-f7fe@5v4qh^l^rl5de5f6n%33mw(xont-%z'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 ALLOWED_HOSTS = ['heatsink-simulator.herokuapp.com','127.0.0.1']
 
-
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -123,9 +121,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Securtity variables
 
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
-SESSION_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
-CSRF_COOKIE_SECURE = True
-X_FRAME_OPTIONS = 'DENY'
+#SECURE_CONTENT_TYPE_NOSNIFF = True
+#SECURE_BROWSER_XSS_FILTER = True
+#SESSION_COOKIE_SECURE = True
+#SECURE_SSL_REDIRECT = True
+#CSRF_COOKIE_SECURE = True
+#X_FRAME_OPTIONS = 'DENY'
