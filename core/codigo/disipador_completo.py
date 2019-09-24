@@ -886,7 +886,6 @@ def RealizaSimulacion(datos):
 	global num_divisiones_x1, num_divisiones_x2, num_divisiones_z, num_divisiones_y1, num_divisiones_y2, dx1, dx2, dy1, dy2, dz, altura_disipador,N, puntos_base_sin_info_adicional, h_conv_aletas, hr_aletas, k, Tinf, Tsur, h_conv_base, hr_base
 
 	disipadores={"7.6": {"ancho": 7.6e-2,"alto": 2.2e-2,"grosor_aleta":1.3e-3,"grosor_base":2e-3,"num_aletas":10}}
-	print(datos["longitud"])
 	ancho_x = disipadores[datos['tipo_disipador']]['ancho']
 	alto_y = disipadores[datos['tipo_disipador']]['alto']
 	profundo_z = datos["longitud"]
