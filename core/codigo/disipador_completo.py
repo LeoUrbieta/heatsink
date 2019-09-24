@@ -881,18 +881,20 @@ def truncate(number, digits) -> float:
     stepper = pow(10.0, digits)
     return math.trunc(stepper * number) / stepper
 
-def RealizaSimulacion():
+def RealizaSimulacion(datos):
 
 	global num_divisiones_x1, num_divisiones_x2, num_divisiones_z, num_divisiones_y1, num_divisiones_y2, dx1, dx2, dy1, dy2, dz, altura_disipador,N, puntos_base_sin_info_adicional, h_conv_aletas, hr_aletas, k, Tinf, Tsur, h_conv_base, hr_base
 
-	ancho_x = 7.6e-2
-	alto_y = 2.2e-2
-	profundo_z = 5.0e-2
-	grosor_aleta = 1.3e-3
-	grosor_base = 2e-3
+	disipadores={"7.6": {"ancho": 7.6e-2,"alto": 2.2e-2,"grosor_aleta":1.3e-3,"grosor_base":2e-3,"num_aletas":10}}
+	print(datos["longitud"])
+	ancho_x = disipadores[datos['tipo_disipador']]['ancho']
+	alto_y = disipadores[datos['tipo_disipador']]['alto']
+	profundo_z = datos["longitud"]
+	grosor_aleta = disipadores[datos['tipo_disipador']]['grosor_aleta']
+	grosor_base = disipadores[datos['tipo_disipador']]['grosor_base']
 
 	#mínimo valor de N es N = 2
-	N = 10
+	N = disipadores[datos['tipo_disipador']]['num_aletas']
 
 	#-----------------------------------
 
@@ -944,7 +946,7 @@ def RealizaSimulacion():
 
 	biot = h_tot_aletas * grosor_aleta / k
 
-	print("Conveccion_aletas: " , h_conv_aletas , "Radiacion_aletas: ", hr_aletas,"Conveccion_base: " , h_conv_base , "Radiacion_base: ", hr_base, "Eficiencia: ", eficiencia, "Biot: ", biot)
+	#print("Conveccion_aletas: " , h_conv_aletas , "Radiacion_aletas: ", hr_aletas,"Conveccion_base: " , h_conv_base , "Radiacion_base: ", hr_base, "Eficiencia: ", eficiencia, "Biot: ", biot)
 
 	q_prima = calor_fuente_en_watts / ( fuentes['ancho'] * fuentes['profundo'] )
 	#print("El calor generado por area es: ",q_prima,"W/m^2")
@@ -993,5 +995,5 @@ def RealizaSimulacion():
 
 	return fig
 
-if __name__ == '__main__':
-	RealizaSimulacion()
+#if __name__ == '__main__':
+#	RealizaSimulacion()

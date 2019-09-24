@@ -7,9 +7,13 @@
     <title>Test plot</title>
 </head>
 <body>
-    <h1>Disipadores de Calor México</h1>
-    <h2>Simulador</h2>
-    <p>{{T}}</p>
-    <img src="/plot/" width="600px" />
+  <h1>Disipadores de Calor México</h1>
+  <h2>Simulador</h2>
+  <form action="/" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+  </form>
+  <img src="/plot/" width="500px" />
 </body>
 </html>
