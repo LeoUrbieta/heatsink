@@ -1,2 +1,2 @@
 web: gunicorn disipadores.wsgi --log-file -
-worker: python disipadores/manage.py rqworker high
+worker: python manage.py rqworker high
