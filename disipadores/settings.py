@@ -100,7 +100,6 @@ RQ_QUEUES = {
     },
     'high': {
         'URL': os.getenv('REDISTOGO_URL'), # If you're on Heroku
-        'DB': 0,
         'DEFAULT_TIMEOUT': 500,
     },
     'low': {
