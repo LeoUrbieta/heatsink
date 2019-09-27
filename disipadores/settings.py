@@ -111,7 +111,7 @@ RQ_QUEUES = {
     }
 }
 
-redis_url = urllib.parse.urlparse(os.environ.get('REDISTOGO_URL', 'redis://localhost:6959'))
+redis_url = urllib.parse.urlparse(os.environ.get('REDISTOGO_URL'))
 
 CACHES = {
     'default': {
