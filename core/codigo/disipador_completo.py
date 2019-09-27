@@ -984,7 +984,7 @@ def RealizaSimulacion(datos):
 	T, C = GeneraMatriz(num_total_de_puntos, puntos_para_bajar_z)
 
 	areas,punto_centro = fuentes_calor.ColocaFuentesDeCalor(divisiones_xz,dx1,dx2,dz,fuentes,puntos_de_base,N,k,q_prima,h_conv_base,Tinf,hr_base,Tsur,T,C)
-
+	
 	Temps_inversa = np.linalg.solve(T,C)
 	#······························#······························#······························#
 	#print("El numero de divisiones por aleta es: ", num_divisiones_x1,"y la distancia por division es: ", dx1)
