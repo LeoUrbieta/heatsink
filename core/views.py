@@ -16,7 +16,8 @@ def home(request):
         form = HeatSinkForm(request.POST)
         if form.is_valid():
             datos = form.cleaned_data
-            fig = django_rq.enqueue(RealizaSimulacion,datos)
+            queue = django_rq.get_queue('high')
+            fig = queue.enqueue(RealizaSimulacion,datos)
             return render(request, "core/home.html",{'form': form, 'T': fig})
     else:
         form = HeatSinkForm()
