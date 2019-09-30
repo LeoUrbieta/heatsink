@@ -28,7 +28,9 @@ def busqueda(request):
 
     global fig,form
 
-    return render(request, "core/home.html",{'form': form})
+    status = fig.get_status()
+
+    return render(request, "core/home.html",{'form': form,'status': status})
 
 def plot(request):
 
