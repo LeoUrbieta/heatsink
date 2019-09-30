@@ -29,7 +29,10 @@ def busqueda(request):
 
     global fig,form
 
-    status = fig.get_status()
+    if fig != None:
+        status = fig.get_status()
+    else:
+        status = "Sin status"
 
     return render(request, "core/home.html",{'form': form,'status': status})
 
@@ -47,7 +50,7 @@ def plot(request):
         response = HttpResponse(buf.getvalue(), content_type='image/png')
 
         # Limpiamos la figura para liberar memoria
-        #fig.result.clear()
+        plt.close(fig.result)
 
         # Añadimos la cabecera de longitud de fichero para más estabilidad
         response['Content-Length'] = str(len(response.content))
