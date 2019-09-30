@@ -39,12 +39,18 @@ def EncuentraPuntosConFuenteEnZ(fuentes,dz,punto_columna_z):
 
 	num_puntos_z_superior = (fuentes['centro_z'] + fuentes['profundo']/2 - dist_a_punto_centro) / dz
 	num_puntos_z_inferior = ((dist_a_punto_centro - fuentes['centro_z']) + fuentes['profundo']/2 ) / dz
-	excedente_superior = num_puntos_z_superior % int(num_puntos_z_superior)
-	excedente_inferior = num_puntos_z_inferior % int(num_puntos_z_inferior)
+	if int(num_puntos_z_superior) == 0:
+		excedente_superior = num_puntos_z_superior
+	if int(num_puntos_z_inferior) == 0:
+		excedente_inferior = num_puntos_z_inferior
+	if int(num_puntos_z_superior) != 0:
+		excedente_superior = num_puntos_z_superior % int(num_puntos_z_superior)
+	if int(num_puntos_z_inferior) != 0:
+		excedente_inferior = num_puntos_z_inferior % int(num_puntos_z_inferior)
 
 	if excedente_superior > 0.5:
 		num_puntos_z_superior += 1
-		excedente_superior = -(excedente_superior - 0.5) 
+		excedente_superior = -(excedente_superior - 0.5)
 	elif excedente_superior == 0.5:
 		excedente_superior = 0
 	elif excedente_superior == 0:
@@ -52,7 +58,7 @@ def EncuentraPuntosConFuenteEnZ(fuentes,dz,punto_columna_z):
 
 	if excedente_inferior > 0.5:
 		num_puntos_z_inferior += 1
-		excedente_inferior = -(excedente_inferior - 0.5) 
+		excedente_inferior = -(excedente_inferior - 0.5)
 	elif excedente_inferior == 0.5:
 		excedente_inferior = 0
 	elif excedente_inferior == 0:
@@ -62,7 +68,7 @@ def EncuentraPuntosConFuenteEnZ(fuentes,dz,punto_columna_z):
 	dist_extra_inferior = excedente_inferior * dz
 
 	puntos_en_z['superior'] = int(num_puntos_z_superior)
-	puntos_en_z['inferior'] = int(num_puntos_z_inferior)	
+	puntos_en_z['inferior'] = int(num_puntos_z_inferior)
 	puntos_en_z['extra_superior'] = dist_extra_superior
 	puntos_en_z['extra_inferior'] = dist_extra_inferior
 
@@ -142,7 +148,7 @@ def EncuentraPuntosConFuenteEnX(fuentes,divisiones,dx1,dx2,punto_renglon_x,num_p
 
 	dist_a_punto_x = EncuentraDistAPuntoX(divisiones,punto_renglon_x,dx1,dx2)
 
-	vector_izq, vector_der = CreaVectoresConDistAIzqYDer(divisiones,dx1,dx2,punto_renglon_x,num_puntos_por_renglon) 
+	vector_izq, vector_der = CreaVectoresConDistAIzqYDer(divisiones,dx1,dx2,punto_renglon_x,num_puntos_por_renglon)
 
 	dist_x_izq = fuentes['centro_x'] - (dist_a_punto_x - vector_izq[-1])
 	dist_x_der = dist_a_punto_x - fuentes['centro_x']
@@ -170,7 +176,7 @@ def EncuentraPuntosConFuenteEnX(fuentes,divisiones,dx1,dx2,punto_renglon_x,num_p
 
 	if porcentaje_sobrado_izq > 0.5:
 		num_puntos_izq += 1
-		porcentaje_sobrado_izq = -(porcentaje_sobrado_izq - 0.5) 
+		porcentaje_sobrado_izq = -(porcentaje_sobrado_izq - 0.5)
 	elif porcentaje_sobrado_izq == 0.5:
 		porcentaje_sobrado_izq = 0
 	elif porcentaje_sobrado_izq == 0:
@@ -178,7 +184,7 @@ def EncuentraPuntosConFuenteEnX(fuentes,divisiones,dx1,dx2,punto_renglon_x,num_p
 
 	if porcentaje_sobrado_der > 0.5:
 		num_puntos_der+= 1
-		porcentaje_sobrado_der =  -(porcentaje_sobrado_der - 0.5) 
+		porcentaje_sobrado_der =  -(porcentaje_sobrado_der - 0.5)
 	elif porcentaje_sobrado_der == 0.5:
 		porcentaje_sobrado_der = 0
 	elif porcentaje_sobrado_der == 0:
@@ -236,7 +242,7 @@ def CreaListaPuntosTotalmenteCubiertos(puntos_despl_en_x,puntos_despl_en_z,punto
 				puntos_izq_x.append(puntos_con_calor[contador_para_subir])
 			if puntos_despl_en_x['sobrado_der'] != 0:
 				puntos_der_x.append(puntos_con_calor[contador_para_subir + limite - 1])
-			contador_para_subir += limite 
+			contador_para_subir += limite
 
 	puntos_a_remover = sorted(list(set(puntos_superior_z + puntos_inferior_z + puntos_izq_x + puntos_der_x)))
 
@@ -258,12 +264,12 @@ def CalculaPuntosInteriores(puntos_cubiertos,puntos_base,dx1,dx2,dz,k,q_prima,h,
 			area_calor = dz * (dx1/2 + dx2/2)
 			if puntos_base[punto][2] == 'frontera_x_izq':
 				areas.append(['punto_interior_frontera_izq',punto,area_calor/dz,dz,area_calor])
-			else: 
+			else:
 				areas.append(['punto_interior_frontera_der',punto,area_calor/dz,dz,area_calor])
 
 		C[puntos_base[punto][1]] = - (2 * q_prima * area_calor / k)
 		T[puntos_base[punto][1]][puntos_base[punto][1]] += 2*(h+hr)/k*area_calor
-	
+
 	return
 
 def CalculaBordes(direccion_puntos,sobrado,puntos_base,puntos_con_fuente_x,dx1,dx2):
@@ -302,7 +308,7 @@ def CalculaBordeEnZ(puntos_z,puntos_con_fuente_z,superior_o_inferior,puntos_base
 			area_calor = dist_z * (dx1/2 + dx2/2)
 			if puntos_base[punto][2] == 'frontera_x_izq':
 				areas.append(['borde_z_frontera_izq',punto,area_calor/dist_z,dist_z,area_calor])
-			else: 
+			else:
 				areas.append(['borde_z_frontera_der',punto,area_calor/dist_z,dist_z,area_calor])
 
 		C[puntos_base[punto][1]] = -2*(h*Tinf+hr*Tsur)/k*(area_total - area_calor) - (2 * q_prima * area_calor / k)
@@ -336,7 +342,7 @@ def CalculaBordeZ(puntos_base,puntos_superior_z,puntos_inferior_z,puntos_con_fue
 
 	CalculaBordeEnZ(puntos_superior_z,puntos_con_fuente_z,'extra_superior',puntos_base,dz,dx1,dx2,k,q_prima,h,Tinf,hr,Tsur,T,C)
 	CalculaBordeEnZ(puntos_inferior_z,puntos_con_fuente_z,'extra_inferior',puntos_base,dz,dx1,dx2,k,q_prima,h,Tinf,hr,Tsur,T,C)
-	
+
 	return
 
 def CalculaBordeEnX(puntos_base,tipo_puntos,tipo_sobrado,puntos_con_fuente_x,dz,dx1,dx2,k,q_prima,h,Tinf,hr,Tsur,T,C):
@@ -376,7 +382,7 @@ def CalculaBordeX(puntos_base,puntos_izq_x,puntos_der_x,puntos_con_fuente_x,dz,d
 
 	CalculaBordeEnX(puntos_base,puntos_izq_x,'sobrado_izq',puntos_con_fuente_x,dz,dx1,dx2,k,q_prima,h,Tinf,hr,Tsur,T,C)
 	CalculaBordeEnX(puntos_base,puntos_der_x,'sobrado_der',puntos_con_fuente_x,dz,dx1,dx2,k,q_prima,h,Tinf,hr,Tsur,T,C)
-	
+
 	return
 
 def CalculaEsquinas(puntos_esquina,puntos_base,puntos_con_fuente_x,puntos_con_fuente_z,dz,dx1,dx2,k,q_prima,h,Tinf,hr,Tsur,T,C):
@@ -419,7 +425,7 @@ def CalculaEsquinas(puntos_esquina,puntos_base,puntos_con_fuente_x,puntos_con_fu
 	return
 
 def CalculaPuntosExternos(puntos_base,puntos_con_fuente_x,puntos_con_fuente_z,puntos_superior_z,puntos_inferior_z,puntos_izq_x,puntos_der_x,dx1,dx2,dz,k,q_prima,h,Tinf,hr,Tsur,T,C):
-	
+
 	puntos_esquina = ExtraeYEliminaEsquinasDuplicadas(puntos_base,puntos_superior_z,puntos_inferior_z,puntos_izq_x,puntos_der_x)
 
 	#print(puntos_con_fuente_x)
