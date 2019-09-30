@@ -36,7 +36,6 @@ def plot(request):
 
     global fig
     # Como enviaremos la imagen en bytes la guardaremos en un buffer
-
     buf = io.BytesIO()
     canvas = FigureCanvasAgg(fig.result)
     canvas.print_png(buf)

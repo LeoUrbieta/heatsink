@@ -1,5 +1,6 @@
 import numpy as np
 import array
+from scipy.sparse.linalg import spsolve
 from . import dimension_grid
 from . import fuentes_calor
 from . import grafica
@@ -984,8 +985,9 @@ def RealizaSimulacion(datos):
 	T, C = GeneraMatriz(num_total_de_puntos, puntos_para_bajar_z)
 
 	areas,punto_centro = fuentes_calor.ColocaFuentesDeCalor(divisiones_xz,dx1,dx2,dz,fuentes,puntos_de_base,N,k,q_prima,h_conv_base,Tinf,hr_base,Tsur,T,C)
-	
-	Temps_inversa = np.linalg.solve(T,C)
+
+	#Temps_inversa = np.linalg.solve(T,C)
+	Temps_inversa = spsolve(T,C)
 	#······························#······························#······························#
 	#print("El numero de divisiones por aleta es: ", num_divisiones_x1,"y la distancia por division es: ", dx1)
 	#print("El numero de divisiones por espacio es: ", num_divisiones_x2,"y la distancia por division es: ", dx2)
