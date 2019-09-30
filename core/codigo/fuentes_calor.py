@@ -39,13 +39,15 @@ def EncuentraPuntosConFuenteEnZ(fuentes,dz,punto_columna_z):
 
 	num_puntos_z_superior = (fuentes['centro_z'] + fuentes['profundo']/2 - dist_a_punto_centro) / dz
 	num_puntos_z_inferior = ((dist_a_punto_centro - fuentes['centro_z']) + fuentes['profundo']/2 ) / dz
-	if int(num_puntos_z_superior) == 0:
+
+	if num_puntos_z_superior < 1:
 		excedente_superior = num_puntos_z_superior
-	if int(num_puntos_z_inferior) == 0:
-		excedente_inferior = num_puntos_z_inferior
-	if int(num_puntos_z_superior) != 0:
+	else:
 		excedente_superior = num_puntos_z_superior % int(num_puntos_z_superior)
-	if int(num_puntos_z_inferior) != 0:
+
+	if num_puntos_z_inferior < 1:
+		excedente_inferior = num_puntos_z_inferior
+	else:
 		excedente_inferior = num_puntos_z_inferior % int(num_puntos_z_inferior)
 
 	if excedente_superior > 0.5:

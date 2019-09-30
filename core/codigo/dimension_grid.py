@@ -38,6 +38,6 @@ def EstableceDimensionesGrid(fuentes,ancho_x_disipador,profundo_z_disipador,gros
 	#divisiones['num_div_z']=20
 
 	divisiones['num_div_y1'] = 2
-	divisiones['num_div_y2'] = 2	
+	divisiones['num_div_y2'] = 2
 
 	return divisiones
