@@ -37,18 +37,25 @@ def plot(request):
 
     global fig
     # Como enviaremos la imagen en bytes la guardaremos en un buffer
-    buf = io.BytesIO()
-    canvas = FigureCanvasAgg(fig.result)
-    canvas.print_png(buf)
 
-    # Creamos la respuesta enviando los bytes en tipo imagen png
-    response = HttpResponse(buf.getvalue(), content_type='image/png')
+    if fig != None:
 
-    # Limpiamos la figura para liberar memoria
-    fig.result.clear()
+        buf = io.BytesIO()
+        canvas = FigureCanvasAgg(fig.result)
+        canvas.print_png(buf)
 
-    # Añadimos la cabecera de longitud de fichero para más estabilidad
-    response['Content-Length'] = str(len(response.content))
+        # Creamos la respuesta enviando los bytes en tipo imagen png
+        response = HttpResponse(buf.getvalue(), content_type='image/png')
 
-    # Devolvemos la response
-    return response
+        # Limpiamos la figura para liberar memoria
+        fig.result.clear()
+
+        # Añadimos la cabecera de longitud de fichero para más estabilidad
+        response['Content-Length'] = str(len(response.content))
+
+        # Devolvemos la response
+        return response
+
+    else:
+
+        return HttpResponse('')
