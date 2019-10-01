@@ -14,7 +14,7 @@ form = HeatSinkForm()
 
 def home(request):
 
-    global fig, form
+    global fig, form, datos
 
     if request.method == 'POST':
         form = HeatSinkForm(request.POST)
@@ -23,7 +23,7 @@ def home(request):
             queue = django_rq.get_queue('high')
             fig = queue.enqueue(RealizaSimulacion,datos)
             #fig = RealizaSimulacion(datos)
-            return  render(request, "core/home.html",{'form': form})
+            return  render(request, "core/home.html",{'form': form,'datos': datos})
     else:
         form = HeatSinkForm()
 
@@ -31,14 +31,14 @@ def home(request):
 
 def busqueda(request):
 
-    global fig,form
+    global fig,form, datos
 
     status = "Sin status"
 
     if fig != "Sin figura":
         status = fig.get_status()
 
-    return render(request, "core/home.html",{'form': form,'status': status})
+    return render(request, "core/home.html",{'form': form,'status': status,'datos': datos})
 
 def plot(request):
 
