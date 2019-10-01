@@ -13,8 +13,10 @@ def home(request):
     global fig, form, contador
 
     contador = 0
+    fig = "Sin figura"
 
     if request.method == 'POST':
+        fig = None
         form = HeatSinkForm(request.POST)
         if form.is_valid():
             datos = form.cleaned_data
@@ -31,7 +33,8 @@ def busqueda(request):
 
     global fig,form
 
-    status = fig.get_status()
+    if fig != "Sin figura":
+        status = fig.get_status()
 
     return render(request, "core/home.html",{'form': form,'status': status})
 
@@ -39,7 +42,7 @@ def plot(request):
 
     global fig, contador
     # Como enviaremos la imagen en bytes la guardaremos en un buffer
-    if fig.get_status() == 'finished':
+    if fig != "Sin figura" and fig.get_status() == 'finished':
 
         contador += 1
 
