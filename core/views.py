@@ -16,7 +16,6 @@ def home(request):
     fig = "Sin figura"
 
     if request.method == 'POST':
-        fig = None
         form = HeatSinkForm(request.POST)
         if form.is_valid():
             datos = form.cleaned_data
