@@ -33,6 +33,8 @@ def busqueda(request):
 
     global fig,form
 
+    status = "Sin status"
+
     if fig != "Sin figura":
         status = fig.get_status()
 
