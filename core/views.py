@@ -8,6 +8,8 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 from .codigo.disipador_completo import RealizaSimulacion
 from .forms import HeatSinkForm
 
+fig = "Sin figura"
+
 def home(request):
 
     global fig, form, contador
@@ -31,7 +33,8 @@ def busqueda(request):
 
     global fig,form
 
-    status = fig.get_status()
+    if fig != "Sin figura":
+        status = fig.get_status()
 
     return render(request, "core/home.html",{'form': form,'status': status})
 
