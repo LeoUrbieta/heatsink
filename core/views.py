@@ -13,7 +13,6 @@ def home(request):
     global fig, form, contador
 
     contador = 0
-    fig = "Sin figura"
 
     if request.method == 'POST':
         form = HeatSinkForm(request.POST)
@@ -32,8 +31,7 @@ def busqueda(request):
 
     global fig,form
 
-    if fig != "Sin figura":
-        status = fig.get_status()
+    status = fig.get_status()
 
     return render(request, "core/home.html",{'form': form,'status': status})
 
@@ -58,7 +56,7 @@ def plot(request):
 
         # Añadimos la cabecera de longitud de fichero para más estabilidad
         response['Content-Length'] = str(len(response.content))
-        response['Query-String'] = str(contador)
+        response['Query-String'] = str(contador) + "ocasion"
 
         # Devolvemos la response
         return response
