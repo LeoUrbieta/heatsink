@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import django_rq
 
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.utils.cache import add_never_cache_headers
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from .codigo.disipador_completo import RealizaSimulacion
@@ -43,7 +43,7 @@ def busqueda(request):
     if fig != "Sin figura":
         status = fig.get_status()
 
-    return render(request, "core/plot.html",{'form': form,'status': status,'datos': datos})
+    return redirect("plot")
 
 @never_cache
 def plot(request):
