@@ -42,7 +42,7 @@ def busqueda(request):
     if fig != "Sin figura":
         status = fig.get_status()
 
-    return render(request, "core/home.html",{'form': form,'status': status,'datos': datos})
+    return render(request, "core/plot.html",{'form': form,'status': status,'datos': datos})
 
 @never_cache
 def plot(request):
