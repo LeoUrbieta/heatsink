@@ -12,6 +12,7 @@ from django.views.decorators.cache import never_cache
 
 fig = "Sin figura"
 form = HeatSinkForm()
+datos = "Sin datos"
 
 def home(request):
 
