@@ -4,6 +4,7 @@ import django_rq
 
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.utils.cache import add_never_cache_headers
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from .codigo.disipador_completo import RealizaSimulacion
 from .forms import HeatSinkForm
@@ -13,9 +14,7 @@ form = HeatSinkForm()
 
 def home(request):
 
-    global fig, form, contador
-
-    contador = 0
+    global fig, form
 
     if request.method == 'POST':
         form = HeatSinkForm(request.POST)
@@ -43,11 +42,9 @@ def busqueda(request):
 
 def plot(request):
 
-    global fig, contador
+    global fig
     # Como enviaremos la imagen en bytes la guardaremos en un buffer
     if fig != "Sin figura" and fig.get_status() == 'finished':
-
-        contador += 1
 
         buf = io.BytesIO()
         canvas = FigureCanvasAgg(fig.result)
@@ -62,8 +59,7 @@ def plot(request):
 
         # Añadimos la cabecera de longitud de fichero para más estabilidad
         response['Content-Length'] = str(len(response.content))
-        response['Query-String'] = str(contador) + "ocasion"
-
+        add_never_cache_headers(response)
         # Devolvemos la response
         return response
 
