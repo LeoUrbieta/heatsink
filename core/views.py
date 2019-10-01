@@ -14,6 +14,7 @@ fig = "Sin figura"
 form = HeatSinkForm()
 datos = "Sin datos"
 
+@never_cache
 def home(request):
 
     global fig, form, datos
