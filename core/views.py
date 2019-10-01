@@ -20,6 +20,7 @@ def home(request):
     global fig, form, datos
 
     if request.method == 'POST':
+        fig = "Sin figura"
         form = HeatSinkForm(request.POST)
         if form.is_valid():
             datos = form.cleaned_data
