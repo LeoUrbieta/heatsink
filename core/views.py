@@ -10,7 +10,9 @@ from .forms import HeatSinkForm
 
 def home(request):
 
-    global fig, form
+    global fig, form, contador
+
+    contador = 0
 
     if request.method == 'POST':
         form = HeatSinkForm(request.POST)
@@ -35,9 +37,11 @@ def busqueda(request):
 
 def plot(request):
 
-    global fig
+    global fig, contador
     # Como enviaremos la imagen en bytes la guardaremos en un buffer
     if fig.get_status() == 'finished':
+
+        contador += 1
 
         buf = io.BytesIO()
         canvas = FigureCanvasAgg(fig.result)
@@ -52,6 +56,7 @@ def plot(request):
 
         # Añadimos la cabecera de longitud de fichero para más estabilidad
         response['Content-Length'] = str(len(response.content))
+        response['Query-String'] = str(contador)
 
         # Devolvemos la response
         return response
