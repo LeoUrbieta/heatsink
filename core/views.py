@@ -44,6 +44,7 @@ def busqueda(request):
 
     return render(request, "core/home.html",{'form': form,'status': status,'datos': datos})
 
+@never_cache
 def plot(request):
 
     global fig
