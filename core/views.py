@@ -9,6 +9,7 @@ from .codigo.disipador_completo import RealizaSimulacion
 from .forms import HeatSinkForm
 
 fig = "Sin figura"
+form = HeatSinkForm()
 
 def home(request):
 
