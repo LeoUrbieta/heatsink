@@ -23,7 +23,7 @@ def home(request):
             queue = django_rq.get_queue('high')
             fig = queue.enqueue(RealizaSimulacion,datos)
             #fig = RealizaSimulacion(datos)
-            return render(request, "core/home.html",{'form': form, 'T': fig})
+            return  render(request, "core/home.html",{'form': form})
     else:
         form = HeatSinkForm()
 
