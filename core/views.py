@@ -8,6 +8,7 @@ from django.utils.cache import add_never_cache_headers
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from .codigo.disipador_completo import RealizaSimulacion
 from .forms import HeatSinkForm
+from django.views.decorators.cache import never_cache
 
 fig = "Sin figura"
 form = HeatSinkForm()
@@ -29,6 +30,7 @@ def home(request):
 
     return render(request, "core/home.html",{'form': form})
 
+@never_cache
 def busqueda(request):
 
     global fig,form, datos
