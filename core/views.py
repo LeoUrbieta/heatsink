@@ -8,12 +8,10 @@ from django.utils.cache import add_never_cache_headers
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from .codigo.disipador_completo import RealizaSimulacion
 from .forms import HeatSinkForm
-from django.views.decorators.cache import never_cache
 from rq.job import Job
 
-@never_cache
 def home(request):
-    
+
     if request.method == 'POST':
         form = HeatSinkForm(request.POST)
         if form.is_valid():
@@ -30,7 +28,7 @@ def home(request):
 
     return render(request, "core/home.html",{'form': form})
 
-@never_cache
+
 def busqueda(request):
 
     form = HeatSinkForm()
@@ -42,7 +40,6 @@ def busqueda(request):
 
     return render(request, "core/home.html",{'form': form,'status': status, 'sesiones' : request.session.items()})
 
-@never_cache
 def plot(request):
 
     fig_id = request.session.get('figura')
@@ -64,7 +61,6 @@ def plot(request):
 
         # Añadimos la cabecera de longitud de fichero para más estabilidad
         response['Content-Length'] = str(len(response.content))
-        add_never_cache_headers(response)
         # Devolvemos la response
         return response
 
