@@ -11,25 +11,20 @@ from .forms import HeatSinkForm
 from django.views.decorators.cache import never_cache
 from rq.job import Job
 
-fig = "Sin figura"
-form = HeatSinkForm()
-datos = "Sin datos"
-
 @never_cache
 def home(request):
-
-    global form, datos
-
+    
     if request.method == 'POST':
-        fig = "Sin figura"
         form = HeatSinkForm(request.POST)
         if form.is_valid():
             datos = form.cleaned_data
             queue = django_rq.get_queue('high')
             fig = queue.enqueue(RealizaSimulacion,datos)
             request.session['figura'] = fig.id
+            request.session['tipo_disipador'] = datos['tipo_disipador']
+            request.session['longitud'] = datos['longitud']
             #fig = RealizaSimulacion(datos)
-            return  render(request, "core/home.html",{'form': form,'datos': datos,'elemento': request.session.items()})
+            return  render(request, "core/home.html",{'form': form,'sesiones': request.session.items()})
     else:
         form = HeatSinkForm()
 
@@ -38,15 +33,14 @@ def home(request):
 @never_cache
 def busqueda(request):
 
-    global form, datos
-
+    form = HeatSinkForm()
     fig_id = request.session.get('figura')
     redis_conn = django_rq.get_connection('high')
     job = Job.fetch(fig_id,connection = redis_conn)
 
     status = job.get_status()
 
-    return render(request, "core/home.html",{'form': form,'datos': datos,'elementos': request.session.get('figura'),'status': status})
+    return render(request, "core/home.html",{'form': form,'status': status, 'sesiones' : request.session.items()})
 
 @never_cache
 def plot(request):
