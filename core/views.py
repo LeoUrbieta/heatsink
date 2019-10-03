@@ -18,8 +18,6 @@ def home(request):
             queue = django_rq.get_queue('high')
             fig = queue.enqueue(RealizaSimulacion,datos)
             request.session['figura'] = fig.id
-            request.session['tipo_disipador'] = datos['tipo_disipador']
-            request.session['longitud'] = datos['longitud']
             #fig = RealizaSimulacion(datos)
             return  render(request, "core/home.html",{'form': form,'sesiones': request.session.items()})
     else:

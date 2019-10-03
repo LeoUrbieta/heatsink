@@ -901,10 +901,10 @@ def RealizaSimulacion(datos):
 	#Datos fuente de calor
 
 	fuentes = {}
-	fuentes['centro_x'] = 3.8e-2
-	fuentes['centro_z']= 2.5e-2
-	fuentes['ancho']= 5.08e-2
-	fuentes['profundo']= 1.27e-2
+	fuentes['centro_x'] = datos["centro_x_fuente"]
+	fuentes['centro_z']= datos["centro_z_fuente"]
+	fuentes['ancho']= datos["ancho_x_fuente"]
+	fuentes['profundo']= datos["profundo_z_fuente"]
 
 	area_fuentes = fuentes['ancho'] * fuentes['profundo']
 	#Datos orientacion disipador
@@ -914,17 +914,17 @@ def RealizaSimulacion(datos):
 	tipos_de_orientacion['aletas_apuntan_abajo'] = "abajo"
 	tipos_de_orientacion['aletas_perpendicular_a_suelo'] = "perpendicular"
 
-	orientacion = "aletas_apuntan_arriba"
+	orientacion = datos["direccion_aletas"]
 
-	calor_fuente_en_watts = 8.24
-	Tinf = 24.3
+	calor_fuente_en_watts = datos["calor_fuente"]
+	Tinf = datos["temperatura"]
 	# 0.6 emision dorado
 	# 0.8 emision negro
 	# 0.05 emision natural
 
 	k = 209
 	Tsur = Tinf
-	emisividad = 0.8
+	emisividad = datos["emisividad"]
 	# 100 y 105 son números arbitrarios para comenzar a buscar los coeficientes de convección y radiación
 	temp_superficie_previo = 100
 	temp_superficie_posterior = 105

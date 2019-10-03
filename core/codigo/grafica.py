@@ -99,7 +99,7 @@ def dibujaElementos(ancho_x,profundo_z,fuentes,dz,dx1,dx2,num_divisiones_x1,num_
 
 	# print(suma)
 
-	CS = ax.contourf(matriz_x,matriz_y,matriz_z,20)
+	CS = ax.contourf(matriz_x,matriz_y,matriz_z,30)
 	#ax.clabel(CS, inline=1, fontsize=10)
 	cbar = fig.colorbar(CS)
 	cbar.ax.set_ylabel('Temperatura')
