@@ -367,6 +367,8 @@ def CalculaBordeEnX(puntos_base,tipo_puntos,tipo_sobrado,puntos_con_fuente_x,dz,
 		else:
 			dist_x = dx2/2
 		area_total = dz * (dx1/2+dx2/2)
+	else:
+		area_total = dz * dx1/2
 
 	if puntos_con_fuente_x[tipo_sobrado] < 0:
 		area_calor = -puntos_con_fuente_x[tipo_sobrado] * dz
@@ -389,8 +391,6 @@ def CalculaBordeX(puntos_base,puntos_izq_x,puntos_der_x,puntos_con_fuente_x,dz,d
 
 def CalculaEsquinas(puntos_esquina,puntos_base,puntos_con_fuente_x,puntos_con_fuente_z,dz,dx1,dx2,k,q_prima,h,Tinf,hr,Tsur,T,C):
 
-	contador = 0
-
 	for p in puntos_esquina:
 		if p[3] == 'superficie_x2':
 			area_total = dx2 * dz
@@ -410,6 +410,8 @@ def CalculaEsquinas(puntos_esquina,puntos_base,puntos_con_fuente_x,puntos_con_fu
 				dist_x = dx2/2
 			else:
 				dist_x = dx1/2
+		else:
+			area_total = dz/2 * dx1/2
 
 		if puntos_con_fuente_z[p[1]] > 0 and puntos_con_fuente_x[p[2]] > 0:
 			area_calor = (dz/2 + puntos_con_fuente_z[p[1]]) * (dist_x + puntos_con_fuente_x[p[2]])

@@ -926,7 +926,7 @@ def RealizaSimulacion(datos):
 
 	k = 209
 	Tsur = Tinf
-	emisividad = datos["emisividad"]
+	emisividad = 0.8
 	# 100 y 105 son números arbitrarios para comenzar a buscar los coeficientes de convección y radiación
 	temp_superficie_previo = 100
 	temp_superficie_posterior = 105

@@ -11,7 +11,6 @@ class HeatSinkForm(forms.Form):
                             #('aletas_perpendicular_a_suelo','perpendicular')
                             )
                         )
-    emisividad = forms.FloatField(label="Emisividad",help_text='Valor entre 0 y 1')
     centro_x_fuente = forms.FloatField(label="Centro X Fuente",help_text='mm')
     centro_z_fuente = forms.FloatField(label="Centro Z Fuente",help_text='mm')
     ancho_x_fuente = forms.FloatField(label="Ancho X Fuente",help_text='mm')
