@@ -128,7 +128,7 @@ def ExtraeInfoAire(temperatura_aire):
 		return air_properties["1000"][0],air_properties["1000"][1],air_properties["1000"][2],air_properties["1000"][3]
 	elif 1250.0 < temperatura_aire <= 1750.0:
 		return air_properties["1500"][0],air_properties["1500"][1],air_properties["1500"][2],air_properties["1500"][3]
-	elif 1750.0 < temperatura_aire
+	elif 1750.0 < temperatura_aire:
 		return air_properties["2000"][0],air_properties["2000"][1],air_properties["2000"][2],air_properties["2000"][3]
 	else:
 		return None
