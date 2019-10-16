@@ -19,7 +19,7 @@ def home(request):
             fig = queue.enqueue(RealizaSimulacion,datos)
             request.session['figura'] = fig.id
             #fig = RealizaSimulacion(datos)
-            return  render(request, "core/home.html",{'form': form,'sesiones': request.session.items()})
+            return render(request, "core/home.html",{'form': form,'sesiones': request.session.items()})
     else:
         form = HeatSinkForm()
 

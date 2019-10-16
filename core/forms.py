@@ -7,8 +7,10 @@ class HeatSinkForm(forms.Form):
                         label="Direccion de Aletas",
                         choices=(
                             ('aletas_apuntan_arriba','arriba'),
-                            ('aletas_apuntan_abajo','abajo'),
-                            ('aletas_perpendicular_a_suelo','perpendicular')))
+                            ('aletas_apuntan_abajo','abajo')
+                            #('aletas_perpendicular_a_suelo','perpendicular')
+                            )
+                        )
     emisividad = forms.FloatField(label="Emisividad")
     centro_x_fuente = forms.FloatField(label="Centro X Fuente")
     centro_z_fuente = forms.FloatField(label="Centro Z Fuente")
