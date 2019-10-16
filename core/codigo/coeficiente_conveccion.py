@@ -4,6 +4,13 @@ air_properties={}
 
 
 #Dynamic viscosity,Kinematic Viscosity,Thermal Conductivity, Specific Heat
+air_properties["-150"] = [8.636e-6,3.013e-6,0.01171,983]
+air_properties["-100"] = [1.189e-6,5.837e-6,0.01582,966]
+air_properties["-50"] = [1.474e-5,9.319e-6,0.01979,999]
+air_properties["-40"] = [1.527e-5,1.008e-5,0.02057,1002]
+air_properties["-30"] = [1.579e-5,1.087e-5,0.02134,1004]
+air_properties["-20"] = [1.630e-5,1.169e-5,0.02211,1005]
+air_properties["-10"] = [1.680e-5,1.252e-5,0.02288,1006]
 air_properties["0"] = [1.729e-5,1.338e-5,0.02364,1006]
 air_properties["5"] = [1.754e-5,1.382e-5,0.02401,1006]
 air_properties["10"] = [1.778e-5,1.426e-5,0.02439,1006]
@@ -20,10 +27,42 @@ air_properties["70"] = [2.052e-5,1.995e-5,0.02881,1007]
 air_properties["80"] = [2.096e-5,2.097e-5,0.02953,1008]
 air_properties["90"] = [2.139e-5,2.201e-5,0.03024,1008]
 air_properties["100"] = [2.181e-5,2.306e-5,0.03095,1009]
+air_properties["120"] = [2.264e-5,2.522e-5,0.03235,1011]
+air_properties["140"] = [2.345e-5,2.745e-5,0.03374,1013]
+air_properties["160"] = [2.420e-5,2.975e-5,0.03511,1016]
+air_properties["180"] = [2.504e-5,3.212e-5,0.03646,1019]
+air_properties["200"] = [2.577e-5,3.455e-5,0.03779,1023]
+air_properties["250"] = [2.760e-5,4.091e-5,0.04104,1033]
+air_properties["300"] = [2.934e-5,4.765e-5,0.04418,1044]
+air_properties["350"] = [3.101e-5,5.475e-5,0.04721,1056]
+air_properties["400"] = [3.261e-5,6.219e-5,0.05015,1069]
+air_properties["450"] = [3.415e-5,6.997e-5,0.05298,1081]
+air_properties["500"] = [3.563e-5,7.806e-5,0.05572,1093]
+air_properties["600"] = [3.846e-5,9.515e-5,0.06093,1115]
+air_properties["700"] = [4.111e-5,1.133e-4,0.06581,1135]
+air_properties["800"] = [4.362e-5,1.326e-4,0.07037,1153]
+air_properties["900"] = [4.600e-5,1.529e-4,0.07465,1169]
+air_properties["1000"] = [4.826e-5,1.741e-4,0.07868,1184]
+air_properties["1500"] = [5.817e-5,2.922e-4,0.09599,1234]
+air_properties["2000"] = [6.630e-5,4.270e-4,0.11113,1264]
 
 def ExtraeInfoAire(temperatura_aire):
 
-	if 0 < temperatura_aire <= 2.5:
+	if temperatura_aire <= -125.0:
+		return air_properties["-150"][0],air_properties["-150"][1],air_properties["-150"][2],air_properties["-150"][3]
+	elif -125.0 < temperatura_aire <= -75.0:
+		return air_properties["-100"][0],air_properties["-100"][1],air_properties["-100"][2],air_properties["-100"][3]
+	elif -75.0 < temperatura_aire <= -45.0:
+		return air_properties["-50"][0],air_properties["-50"][1],air_properties["-50"][2],air_properties["-50"][3]
+	elif -45.0 < temperatura_aire <= -35.0:
+		return air_properties["-40"][0],air_properties["-40"][1],air_properties["-40"][2],air_properties["-40"][3]
+	elif -35.0 < temperatura_aire <= -25.0:
+		return air_properties["-30"][0],air_properties["-30"][1],air_properties["-30"][2],air_properties["-30"][3]
+	elif -25.0 < temperatura_aire <= -15.0:
+		return air_properties["-20"][0],air_properties["-20"][1],air_properties["-20"][2],air_properties["-20"][3]
+	elif -15.0 < temperatura_aire <= -5.0:
+		return air_properties["-10"][0],air_properties["-10"][1],air_properties["-10"][2],air_properties["-10"][3]
+	elif -5.0 < temperatura_aire <= 2.5:
 		return air_properties["0"][0],air_properties["0"][1],air_properties["0"][2],air_properties["0"][3]
 	elif 2.5 < temperatura_aire <= 7.5:
 		return air_properties["5"][0],air_properties["5"][1],air_properties["5"][2],air_properties["5"][3]
@@ -53,8 +92,44 @@ def ExtraeInfoAire(temperatura_aire):
 		return air_properties["80"][0],air_properties["80"][1],air_properties["80"][2],air_properties["80"][3]
 	elif 85.0 < temperatura_aire <= 95.0:
 		return air_properties["90"][0],air_properties["90"][1],air_properties["90"][2],air_properties["90"][3]
-	elif 95.0 < temperatura_aire <= 105.0:
+	elif 95.0 < temperatura_aire <= 110.0:
 		return air_properties["100"][0],air_properties["100"][1],air_properties["100"][2],air_properties["100"][3]
+	elif 110.0 < temperatura_aire <= 130.0:
+		return air_properties["120"][0],air_properties["120"][1],air_properties["120"][2],air_properties["120"][3]
+	elif 130.0 < temperatura_aire <= 150.0:
+		return air_properties["140"][0],air_properties["140"][1],air_properties["140"][2],air_properties["140"][3]
+	elif 150.0 < temperatura_aire <= 170.0:
+		return air_properties["160"][0],air_properties["160"][1],air_properties["160"][2],air_properties["160"][3]
+	elif 170.0 < temperatura_aire <= 190.0:
+		return air_properties["180"][0],air_properties["180"][1],air_properties["180"][2],air_properties["180"][3]
+	elif 190.0 < temperatura_aire <= 225.0:
+		return air_properties["200"][0],air_properties["200"][1],air_properties["200"][2],air_properties["200"][3]
+	elif 225.0 < temperatura_aire <= 275.0:
+		return air_properties["250"][0],air_properties["250"][1],air_properties["250"][2],air_properties["250"][3]
+	elif 275.0 < temperatura_aire <= 325.0:
+		return air_properties["300"][0],air_properties["300"][1],air_properties["300"][2],air_properties["300"][3]
+	elif 325.0 < temperatura_aire <= 375.0:
+		return air_properties["350"][0],air_properties["350"][1],air_properties["350"][2],air_properties["350"][3]
+	elif 375.0 < temperatura_aire <= 425.0:
+		return air_properties["400"][0],air_properties["400"][1],air_properties["400"][2],air_properties["400"][3]
+	elif 425.0 < temperatura_aire <= 475.0:
+		return air_properties["450"][0],air_properties["450"][1],air_properties["450"][2],air_properties["450"][3]
+	elif 475.0 < temperatura_aire <= 550.0:
+		return air_properties["500"][0],air_properties["500"][1],air_properties["500"][2],air_properties["500"][3]
+	elif 550.0 < temperatura_aire <= 650.0:
+		return air_properties["600"][0],air_properties["600"][1],air_properties["600"][2],air_properties["600"][3]
+	elif 650.0 < temperatura_aire <= 750.0:
+		return air_properties["700"][0],air_properties["700"][1],air_properties["700"][2],air_properties["700"][3]
+	elif 750.0 < temperatura_aire <= 850.0:
+		return air_properties["800"][0],air_properties["800"][1],air_properties["800"][2],air_properties["800"][3]
+	elif 850.0 < temperatura_aire <= 950.0:
+		return air_properties["900"][0],air_properties["900"][1],air_properties["900"][2],air_properties["900"][3]
+	elif 950.0 < temperatura_aire <= 1250.0:
+		return air_properties["1000"][0],air_properties["1000"][1],air_properties["1000"][2],air_properties["1000"][3]
+	elif 1250.0 < temperatura_aire <= 1750.0:
+		return air_properties["1500"][0],air_properties["1500"][1],air_properties["1500"][2],air_properties["1500"][3]
+	elif 1750.0 < temperatura_aire
+		return air_properties["2000"][0],air_properties["2000"][1],air_properties["2000"][2],air_properties["2000"][3]
 	else:
 		return None
 
@@ -102,22 +177,20 @@ def CalculaNusselt(rayleigh_aletas,rayleigh_base,orientacion):
 	if rayleigh_aletas < 1e9:
 		if(orientacion == "arriba"):
 			nusselt_aletas = 0.54 * rayleigh_aletas**0.243
-			#nusselt_aletas = 0.54 * rayleigh_aletas**0.232
 		elif(orientacion == "abajo"):
 			nusselt_aletas = 0.27 * rayleigh_aletas**0.265
 		else:
-			nusselt_aletas = 0.1 * rayleigh_aletas**0.232
+			nusselt_aletas = 0.59 * rayleigh_aletas**0.25
 	else:
 		nusselt_aletas = 0.14 * rayleigh_aletas**0.33
 
 	if rayleigh_base < 1e9:
 		if(orientacion == "arriba"):
 			nusselt_base = 0.27 * rayleigh_base**0.243
-			#nusselt_base = 0.27 * rayleigh_base**0.2645
 		elif(orientacion == "abajo"):
 			nusselt_base = 0.54 * rayleigh_base**0.27
 		else:
-			nusselt_base = 0.1 * rayleigh_base**0.232
+			nusselt_base = 0.59 * rayleigh_base**0.25
 	else:
 		nusselt_base =  0.14 * rayleigh_base**0.33
 
