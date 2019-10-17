@@ -22,5 +22,6 @@ urlpatterns = [
     path('',core_views.home,name="home"),
     path('plot/', core_views.plot,name="plot"),
     path('django-rq/', include('django_rq.urls')),
-    path('busqueda/',core_views.busqueda,name="busqueda")
+    path('busqueda/',core_views.busqueda,name="busqueda"),
+    path('drag/',core_views.drag,name="drag")
 ]

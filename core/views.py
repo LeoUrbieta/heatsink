@@ -79,3 +79,6 @@ def plot(request):
 
     else:
         return HttpResponse('')
+
+def drag(request):
+    return render(request,"core/drag.html")
