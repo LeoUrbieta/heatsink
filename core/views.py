@@ -14,12 +14,13 @@ def home(request):
     if request.method == 'POST':
         form = HeatSinkForm(request.POST)
         if form.is_valid():
+            mensaje_status = "Después de unos segundos, da click en el botón de abajo para obtener tu simulación"
             datos = form.cleaned_data
             queue = django_rq.get_queue('high')
             fig = queue.enqueue(RealizaSimulacion,datos)
             request.session['figura'] = fig.id
             #fig = RealizaSimulacion(datos)
-            return render(request, "core/home.html",{'form': form,'sesiones': request.session.items()})
+            return render(request, "core/home.html",{'form': form,'mensaje': mensaje_status})
     else:
         form = HeatSinkForm()
 
@@ -33,9 +34,12 @@ def busqueda(request):
     redis_conn = django_rq.get_connection('high')
     job = Job.fetch(fig_id,connection = redis_conn)
 
-    status = job.get_status()
+    if job.get_status() == 'finished':
+        mensaje_status = "Tu simulación está lista"
+    else:
+        mensaje_status = "Todavia no he terminado :(. Vuelve a intentar en 10 segundos. Gracias."
 
-    return render(request, "core/home.html",{'form': form,'status': status, 'sesiones' : request.session.items()})
+    return render(request, "core/home.html",{'form': form,'mensaje': mensaje_status})
 
 def plot(request):
 

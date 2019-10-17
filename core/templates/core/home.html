@@ -12,14 +12,13 @@
   <form action="/" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Submit">
+    <input type="submit" value="Comienza Simulación">
   </form>
+  {{mensaje}}
   <form action="/busqueda/" method="post">
     {% csrf_token %}
-    <button type="submit" value="Submit">Da click para obtener informacion</button>
+    <button type="submit" value="Submit">Da click para obtener tu simulación</button>
   </form>
-  {{status}}
-  {{sesiones}}
   <img src="/plot/" width="500px" alt="No hay imagen"/>
 </body>
 </html>
