@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from .codigo.disipador_completo import RealizaSimulacion
+from .codigo.validaciones.validacion_fuente_calor import ValidaFuenteCalorEsteDentroDisipador
 from .forms import HeatSinkForm
 from rq.job import Job
 
@@ -14,13 +15,24 @@ def home(request):
     if request.method == 'POST':
         form = HeatSinkForm(request.POST)
         if form.is_valid():
-            mensaje_status = "Después de unos segundos, da click en el botón de abajo para obtener tu simulación"
             datos = form.cleaned_data
-            queue = django_rq.get_queue('high')
-            fig = queue.enqueue(RealizaSimulacion,datos)
-            request.session['figura'] = fig.id
-            #fig = RealizaSimulacion(datos)
-            return render(request, "core/home.html",{'form': form,'mensaje': mensaje_status})
+            fuente_esta_adentro = ValidaFuenteCalorEsteDentroDisipador(datos)
+            if(fuente_esta_adentro):
+                mensaje_status = "Después de unos segundos, da click en el botón de abajo para obtener tu simulación"
+                queue = django_rq.get_queue('high')
+                fig = queue.enqueue(RealizaSimulacion,datos)
+                if fig != None:
+                    request.session['figura'] = fig.id
+                    #fig = RealizaSimulacion(datos)
+                    return render(request, "core/home.html",{'form': form,'mensaje': mensaje_status})
+                else:
+                    #Este else es para un doble chequeo dentro del código de ejecución de RealizaSimulacion, solo por si acaso
+                    mensaje_status = "La fuente de calor queda fuera del disipador. Por favor, revisa los valores nuevamente."
+                    return render(request, "core/home.html",{'form': form,'mensaje': mensaje_status})
+            else:
+                #Este else es para el chequeo que realiza la funcion ValidaFuenteEsteDentroDeDisipador
+                mensaje_status = "La fuente de calor queda fuera del disipador. Por favor, revisa los valores nuevamente."
+                return render(request, "core/home.html",{'form': form,'mensaje': mensaje_status})
     else:
         form = HeatSinkForm()
 

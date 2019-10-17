@@ -955,6 +955,9 @@ def RealizaSimulacion(datos):
 
 	divisiones_xz = dimension_grid.EstableceDimensionesGrid(fuentes,ancho_x,profundo_z,grosor_aleta,N)
 
+	if divisiones_xz == None:
+		return None
+
 	num_divisiones_x1 = divisiones_xz['num_div_x1']
 	num_divisiones_x2 = divisiones_xz['num_div_x2']
 	num_divisiones_z = divisiones_xz['num_div_z']
