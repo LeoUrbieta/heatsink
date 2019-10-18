@@ -1,0 +1,22 @@
+{
+  "name": "disipadores",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeoUrbieta/heatsink.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LeoUrbieta/heatsink/issues"
+  },
+  "homepage": "https://github.com/LeoUrbieta/heatsink#readme",
+  "dependencies": {
+    "interactjs": "^1.6.2"
+  }
+}
