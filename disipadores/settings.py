@@ -26,7 +26,7 @@ SECRET_KEY = 'c*$v4q&l9aw-kd-f7fe@5v4qh^l^rl5de5f6n%33mw(xont-%z'
 ALLOWED_HOSTS = ['heatsink-simulator.herokuapp.com','127.0.0.1']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
