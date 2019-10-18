@@ -5,3 +5,4 @@ matplotlib==3.1.1
 numpy==1.17.2
 django-rq
 scipy
+whitenoise
