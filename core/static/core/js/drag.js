@@ -23,7 +23,7 @@ interact('.draggable')
         'moved a distance of ' +
         (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
                    Math.pow(event.pageY - event.y0, 2) | 0))
-          .toFixed(2) + 'px')
+          .toFixed(2) + 'px. Pos X:' + (event.pageX - event.x0))
     }
   })
 
