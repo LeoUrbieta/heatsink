@@ -178,7 +178,7 @@ def CalculaNusselt(rayleigh_aletas,rayleigh_base,orientacion):
 		if(orientacion == "arriba"):
 			nusselt_aletas = 0.54 * rayleigh_aletas**0.243
 		elif(orientacion == "abajo"):
-			nusselt_aletas = 0.27 * rayleigh_aletas**0.265
+			nusselt_aletas = 0.27 * rayleigh_aletas**0.2775
 		else:
 			nusselt_aletas = 0.59 * rayleigh_aletas**0.25
 	else:
@@ -188,7 +188,7 @@ def CalculaNusselt(rayleigh_aletas,rayleigh_base,orientacion):
 		if(orientacion == "arriba"):
 			nusselt_base = 0.27 * rayleigh_base**0.243
 		elif(orientacion == "abajo"):
-			nusselt_base = 0.54 * rayleigh_base**0.27
+			nusselt_base = 0.54 * rayleigh_base**0.243
 		else:
 			nusselt_base = 0.59 * rayleigh_base**0.25
 	else:
