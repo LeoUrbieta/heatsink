@@ -321,22 +321,27 @@ def CalculaBordeEnZ(puntos_z,puntos_con_fuente_z,superior_o_inferior,puntos_base
 def ExtraeYEliminaEsquinasDuplicadas(puntos_base,puntos_superior_z,puntos_inferior_z,puntos_izq_x,puntos_der_x):
 
 	puntos_esquina = []
-	if puntos_superior_z[0] == puntos_izq_x[-1]:
-		puntos_esquina.append([puntos_superior_z[0],'extra_superior','sobrado_izq',puntos_base[puntos_superior_z[0]][2]])
-		del puntos_superior_z[0]
-		del puntos_izq_x[-1]
-	if puntos_izq_x[0] == puntos_inferior_z[0]:
-		puntos_esquina.append([puntos_izq_x[0],'extra_inferior','sobrado_izq',puntos_base[puntos_izq_x[0]][2]])
-		del puntos_izq_x[0]
-		del puntos_inferior_z[0]
-	if puntos_inferior_z[-1] == puntos_der_x[0]:
-		puntos_esquina.append([puntos_inferior_z[-1],'extra_inferior','sobrado_der',puntos_base[puntos_inferior_z[-1]][2]])
-		del puntos_inferior_z[-1]
-		del puntos_der_x[0]
-	if puntos_der_x[-1] == puntos_superior_z[-1]:
-		puntos_esquina.append([puntos_der_x[-1],'extra_superior','sobrado_der',puntos_base[puntos_der_x[-1]][2]])
-		del puntos_der_x[-1]
-		del puntos_superior_z[-1]
+
+	if len(puntos_superior_z) != 0 and len(puntos_izq_x) != 0: #Solo entrar a estas condiciones si existen sobrantes
+		if puntos_superior_z[0] == puntos_izq_x[-1]:
+			puntos_esquina.append([puntos_superior_z[0],'extra_superior','sobrado_izq',puntos_base[puntos_superior_z[0]][2]])
+			del puntos_superior_z[0]
+			del puntos_izq_x[-1]
+	if len(puntos_inferior_z) != 0 and len(puntos_izq_x) != 0:
+		if puntos_izq_x[0] == puntos_inferior_z[0]:
+			puntos_esquina.append([puntos_izq_x[0],'extra_inferior','sobrado_izq',puntos_base[puntos_izq_x[0]][2]])
+			del puntos_izq_x[0]
+			del puntos_inferior_z[0]
+	if len(puntos_inferior_z) != 0 and len(puntos_der_x) != 0:
+		if puntos_inferior_z[-1] == puntos_der_x[0]:
+			puntos_esquina.append([puntos_inferior_z[-1],'extra_inferior','sobrado_der',puntos_base[puntos_inferior_z[-1]][2]])
+			del puntos_inferior_z[-1]
+			del puntos_der_x[0]
+	if len(puntos_superior_z) != 0 and len(puntos_der_x) != 0:
+		if puntos_der_x[-1] == puntos_superior_z[-1]:
+			puntos_esquina.append([puntos_der_x[-1],'extra_superior','sobrado_der',puntos_base[puntos_der_x[-1]][2]])
+			del puntos_der_x[-1]
+			del puntos_superior_z[-1]
 
 	return puntos_esquina
 
