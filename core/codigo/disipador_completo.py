@@ -995,12 +995,10 @@ def RealizaSimulacion(datos):
 	areas,punto_centro = fuentes_calor.ColocaFuentesDeCalor(divisiones_xz,dx1,dx2,dz,fuentes,puntos_de_base,N,k,q_prima,h_conv_base,Tinf,hr_base,Tsur,T,C)
 
 	#Temps_inversa = np.linalg.solve(T,C)
+	Temps_inversa = spsolve(T,C)
 	if calor_fuente_en_watts == 0.0:
-		Temps_inversa = np.zeros(num_total_de_puntos + 1)
 		for idx,temp in enumerate(Temps_inversa):
-			Temps_inversa[idx] = Tinf
-	else:
-		Temps_inversa = spsolve(T,C)
+			Temps_inversa[idx] = np.around(temp,2) #Esto para que redondé a Tinf todos los valores.
 	#······························#······························#······························#
 	#print("El numero de divisiones por aleta es: ", num_divisiones_x1,"y la distancia por division es: ", dx1)
 	#print("El numero de divisiones por espacio es: ", num_divisiones_x2,"y la distancia por division es: ", dx2)
