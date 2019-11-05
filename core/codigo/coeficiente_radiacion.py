@@ -44,6 +44,6 @@ def CalculaCoeficienteRadiacion(ancho,alto,grueso_base,largo,grueso_aleta,N,Tinf
     eps = emisividad
     calor_radiacion_aletas = CalcularCalorRadiacionAletas(ancho,alto,grueso_base,largo,grueso_aleta,N,Tinf,temp_superficie_posterior,area_base)
     if temp_superficie_posterior == Tinf:
-        return 0.0, 0.0
+        return 1.0, 1.0
     else:
         return (calor_radiacion_aletas)/((area_canales + area_aletas + area_base)*(temp_superficie_posterior - Tinf)) , (calor_radiacion_aletas)/((area_canales + area_aletas + area_base)*(temp_superficie_posterior - Tinf))

@@ -460,7 +460,7 @@ def GeneraEcuacionesY(T,C,puntos_sig_z):
 			EcuacionParaPuntoFronteraBorde(T,C,punto,dir_z,puntos_sig_z)
 			continue
 
-		T[punto[0]][punto[0]] = -2*(tam_y*dz/dx1 + dz*dx1/tam_y + tam_y*dx1/dz + (h_conv_aletas+hr_base)*(dx1*tam_y+tam_y*dz)/k)
+		T[punto[0]][punto[0]] = -2*(tam_y*dz/dx1 + dz*dx1/tam_y + tam_y*dx1/dz + (h_conv_aletas+hr_aletas)*(dx1*tam_y+tam_y*dz)/k)
 		T[punto[0]][punto[0] + avance_x * (altura_disipador + 1)] = 2*dz*tam_y/dx1
 		T[punto[0]][punto[0] - 1] = dz*dx1/tam_y
 		T[punto[0]][punto[0] + 1] = dz*dx1/tam_y
@@ -671,7 +671,7 @@ def GeneraEcuacionesParedLateralySuperior(T,C,puntos_sig_z):
 		T[p[0]][p[0] + dir_y] = 2*dz*tam_x/tam_y
 		T[p[0]][p[0] + puntos_sig_z] = tam_x*tam_y/dz
 		T[p[0]][p[0] - puntos_sig_z] = tam_x*tam_y/dz
-		C[p[0]] = -2*(h_conv*Tinf+h_rad)/k*tam_x*dz
+		C[p[0]] = -2*(h_conv*Tinf+h_rad*Tsur)/k*tam_x*dz
 
 		#print(p[0],p[0] - despl_x_izq,p[0] + despl_x_der,p[0] + dir_y,p[0] + puntos_sig_z,p[0] - puntos_sig_z,tam_x,tam_y)
 
@@ -891,7 +891,7 @@ def RealizaSimulacion(datos):
 				}
 	ancho_x = disipadores[datos['tipo_disipador']]['ancho']
 	alto_y = disipadores[datos['tipo_disipador']]['alto']
-	profundo_z = datos["longitud"] * 1e-3
+	profundo_z = float(datos["longitud"] * 1e-3)
 	grosor_aleta = disipadores[datos['tipo_disipador']]['grosor_aleta']
 	grosor_base = disipadores[datos['tipo_disipador']]['grosor_base']
 
@@ -903,10 +903,10 @@ def RealizaSimulacion(datos):
 	#Datos fuente de calor
 
 	fuentes = {}
-	fuentes['centro_x'] = datos["centro_x_fuente"] * 1e-3
-	fuentes['centro_z']= datos["centro_z_fuente"] * 1e-3
-	fuentes['ancho']= datos["ancho_x_fuente"] * 1e-3
-	fuentes['profundo']= datos["profundo_z_fuente"] * 1e-3
+	fuentes['centro_x'] = float(datos["centro_x_fuente"] * 1e-3)
+	fuentes['centro_z']= float(datos["centro_z_fuente"] * 1e-3)
+	fuentes['ancho']= float(datos["ancho_x_fuente"] * 1e-3)
+	fuentes['profundo']= float(datos["profundo_z_fuente"] * 1e-3)
 
 	area_fuentes = fuentes['ancho'] * fuentes['profundo']
 	#Datos orientacion disipador
@@ -918,8 +918,8 @@ def RealizaSimulacion(datos):
 
 	orientacion = datos["direccion_aletas"]
 
-	calor_fuente_en_watts = datos["calor_fuente"]
-	Tinf = datos["temperatura"]
+	calor_fuente_en_watts = float(datos["calor_fuente"])
+	Tinf = float(datos["temperatura"])
 	# 0.6 emision dorado
 	# 0.8 emision negro
 	# 0.05 emision natural
@@ -995,7 +995,12 @@ def RealizaSimulacion(datos):
 	areas,punto_centro = fuentes_calor.ColocaFuentesDeCalor(divisiones_xz,dx1,dx2,dz,fuentes,puntos_de_base,N,k,q_prima,h_conv_base,Tinf,hr_base,Tsur,T,C)
 
 	#Temps_inversa = np.linalg.solve(T,C)
-	Temps_inversa = spsolve(T,C)
+	if calor_fuente_en_watts == 0.0:
+		Temps_inversa = np.zeros(num_total_de_puntos + 1)
+		for idx,temp in enumerate(Temps_inversa):
+			Temps_inversa[idx] = Tinf
+	else:
+		Temps_inversa = spsolve(T,C)
 	#······························#······························#······························#
 	#print("El numero de divisiones por aleta es: ", num_divisiones_x1,"y la distancia por division es: ", dx1)
 	#print("El numero de divisiones por espacio es: ", num_divisiones_x2,"y la distancia por division es: ", dx2)

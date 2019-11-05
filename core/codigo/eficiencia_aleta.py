@@ -13,7 +13,4 @@ def CalculaEficienciaAleta(ancho,alto,grosor_base,largo,grosor_aleta,h_tot,k):
 
 	l_c = altura_aleta + (grosor_aleta / 2)
 
-	if m != 0.0:
-		return (np.tanh(m * l_c)) / (m * l_c)
-	else:
-		return 0.0
+	return (np.tanh(m * l_c)) / (m * l_c)
