@@ -212,4 +212,7 @@ def CalculaCoeficienteConveccion(ancho_disipador,altura_disipador,grosor_base,lo
 
 	coeficiente_conveccion_aletas, coeficiente_conveccion_base = CalculaCoeficienteConveccionDeNusselt(thermal_conductivity,long_caracteristica_aletas,nusselt_aletas,nusselt_base,long_caracteristica_base)
 
-	return coeficiente_conveccion_aletas, coeficiente_conveccion_base
+	if temp_superficie_posterior == temp_ambiente:
+		return 1.0, 1.0
+	else:
+		return coeficiente_conveccion_aletas, coeficiente_conveccion_base

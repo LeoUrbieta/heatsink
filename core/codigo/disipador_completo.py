@@ -941,7 +941,10 @@ def RealizaSimulacion(datos):
 		h_tot_aletas = h_conv_aletas + hr_aletas
 		h_tot_base = h_conv_base + hr_base
 		eficiencia = eficiencia_aleta.CalculaEficienciaAleta(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,h_tot_aletas,k)
-		temp_superficie_posterior = (calor_fuente_en_watts / (h_tot_aletas * (area_canales + eficiencia * area_aletas) + h_tot_base * area_base)) + Tinf
+		if temp_superficie_posterior == Tinf:
+			break
+		else:
+			temp_superficie_posterior = (calor_fuente_en_watts / (h_tot_aletas * (area_canales + eficiencia * area_aletas) + h_tot_base * area_base)) + Tinf
 		contador_iteraciones += 1
 		if(contador_iteraciones == 10):
 			break

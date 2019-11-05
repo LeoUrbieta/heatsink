@@ -5,7 +5,7 @@ def truncate(number, digits) -> float:
     stepper = pow(10.0, digits)
     return math.trunc(stepper * number) / stepper
 
-eps = 1	
+eps = 1
 sigma = 5.67e-8
 
 def CalculaViewFactor(ancho,alto,grueso_base,largo,grueso_aleta,N,ancho_canal,alto_aleta):
@@ -25,8 +25,8 @@ def CalculaCalorCanal(ancho,alto,grueso_base,largo,grueso_aleta,N,Tinf,temp_supe
 	return (sigma * (ancho_canal + 2 * alto_aleta)*((temp_superficie_posterior+273)**4 - (Tinf+273)**4) * largo)/(((1-eps)/eps) + (1 / view_factor))
 
 def CalculaAreaNoAfectadaPorReboteRadiacion(ancho,alto,grueso_base,largo,grueso_aleta,N,area_base):
-	
-	alto_aleta = alto - grueso_base 
+
+	alto_aleta = alto - grueso_base
 
 	return N * (largo * grueso_aleta + 2 * alto_aleta * grueso_aleta) + 2 * alto_aleta * largo + 2 * grueso_aleta * (largo + ancho) + area_base
 
@@ -40,9 +40,10 @@ def CalcularCalorRadiacionAletas(ancho,alto,grueso_base,largo,grueso_aleta,N,Tin
 
 def CalculaCoeficienteRadiacion(ancho,alto,grueso_base,largo,grueso_aleta,N,Tinf,calor,temp_superficie_posterior,area_canales,area_aletas,emisividad,area_base):
 
-	global eps
-
-	eps = emisividad
-
-	calor_radiacion_aletas = CalcularCalorRadiacionAletas(ancho,alto,grueso_base,largo,grueso_aleta,N,Tinf,temp_superficie_posterior,area_base)
-	return (calor_radiacion_aletas)/((area_canales + area_aletas + area_base)*(temp_superficie_posterior - Tinf)) , (calor_radiacion_aletas)/((area_canales + area_aletas + area_base)*(temp_superficie_posterior - Tinf))
+    global eps
+    eps = emisividad
+    calor_radiacion_aletas = CalcularCalorRadiacionAletas(ancho,alto,grueso_base,largo,grueso_aleta,N,Tinf,temp_superficie_posterior,area_base)
+    if temp_superficie_posterior == Tinf:
+        return 0.0, 0.0
+    else:
+        return (calor_radiacion_aletas)/((area_canales + area_aletas + area_base)*(temp_superficie_posterior - Tinf)) , (calor_radiacion_aletas)/((area_canales + area_aletas + area_base)*(temp_superficie_posterior - Tinf))
