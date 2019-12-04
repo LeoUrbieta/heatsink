@@ -40,10 +40,14 @@ def CalcularCalorRadiacionAletas(ancho,alto,grueso_base,largo,grueso_aleta,N,Tin
 
 def CalculaCoeficienteRadiacion(ancho,alto,grueso_base,largo,grueso_aleta,N,Tinf,calor,temp_superficie_posterior,area_canales,area_aletas,emisividad,area_base):
 
-    global eps
-    eps = emisividad
-    calor_radiacion_aletas = CalcularCalorRadiacionAletas(ancho,alto,grueso_base,largo,grueso_aleta,N,Tinf,temp_superficie_posterior,area_base)
-    if temp_superficie_posterior == Tinf:
-        return 1.0, 1.0
-    else:
-        return (calor_radiacion_aletas)/((area_canales + area_aletas + area_base)*(temp_superficie_posterior - Tinf)) , (calor_radiacion_aletas)/((area_canales + area_aletas + area_base)*(temp_superficie_posterior - Tinf))
+	global eps
+
+	eps = emisividad
+
+	calor_radiacion_aletas = CalcularCalorRadiacionAletas(ancho,alto,grueso_base,largo,grueso_aleta,N,Tinf,temp_superficie_posterior,area_base)
+
+	if temp_superficie_posterior == Tinf:
+		return 1.0, 1.0 #Se regresa un valor constante cuando la fuente de calor es 0W. Esto para que el sistema lineal no se vuelva homogeneo.
+	else:
+		return (calor_radiacion_aletas)/((area_canales + area_aletas + area_base)*(temp_superficie_posterior - Tinf)) , 0.0
+		#return (calor_radiacion_aletas)/((area_canales + area_aletas + area_base)*(temp_superficie_posterior - Tinf)) , (calor_radiacion_aletas)/((area_canales + area_aletas + area_base)*(temp_superficie_posterior - Tinf))

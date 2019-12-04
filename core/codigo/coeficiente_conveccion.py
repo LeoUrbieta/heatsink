@@ -133,14 +133,16 @@ def ExtraeInfoAire(temperatura_aire):
 	else:
 		return None
 
-def ObtenLongitudCaracteristicaAletas(altura,grosor,longitud):
+def ObtenLongitudCaracteristicaAletas(altura,grosor,longitud,orientacion,espacio_entre_aletas):
 
-	if (altura - grosor) > longitud:
-		return altura - grosor
+	longitud_caracteristica = (espacio_entre_aletas * longitud) / (altura-grosor)
+
+	if orientacion == "arriba" or orientacion == "abajo":
+		return longitud_caracteristica
 	else:
 		return longitud
 
-def CalculaGrashof(temp_ambiente,g,beta,long_caracteristica_aletas,kinematic_viscosity,temp_superficie,long_caracteristica_base):
+def CalculaGrashof(temp_ambiente,g,beta,kinematic_viscosity,temp_superficie,long_caracteristica_base,long_caracteristica_aletas):
 
 	grashof_aletas = (g * long_caracteristica_aletas**3 * beta * (temp_superficie - temp_ambiente)) / (kinematic_viscosity**2)
 	grashof_base = (g * long_caracteristica_base**3 * beta * (temp_superficie - temp_ambiente)) / (kinematic_viscosity**2)
@@ -158,12 +160,17 @@ def CalculaCoeficienteConveccionDeNusselt(thermal_conductivity,long_caracteristi
 
 	return coef_aletas, coef_base
 
-def ObtenLongitudCaracteristicaBase(ancho, largo):
+def ObtenLongitudCaracteristicaBase(ancho, largo,fuentes):
 
-	if ancho > largo:
-		return ancho
-	else:
-		return largo
+	area = ancho * largo
+	perimetro = 2 * ancho + 2 * largo
+
+	area_fuente = fuentes['ancho'] * fuentes['profundo']
+	perimetro_fuentes = 2 * fuentes['ancho'] + 2 * fuentes['profundo']
+
+	long_caracteristica_efectiva_base = (area - area_fuente) / (perimetro - perimetro_fuentes)
+
+	return long_caracteristica_efectiva_base
 
 def CalculaRayleigh(grashof_aletas,grashof_base,prandtl):
 
@@ -172,13 +179,13 @@ def CalculaRayleigh(grashof_aletas,grashof_base,prandtl):
 
 	return rayleigh_aletas, rayleigh_base
 
-def CalculaNusselt(rayleigh_aletas,rayleigh_base,orientacion):
+def CalculaNusselt(rayleigh_aletas,rayleigh_base,orientacion,espacio_entre_aletas,altura_disipador,grosor_base):
 
 	if rayleigh_aletas < 1e9:
 		if(orientacion == "arriba"):
-			nusselt_aletas = 0.54 * rayleigh_aletas**0.243
+			nusselt_aletas = espacio_entre_aletas / (altura_disipador - grosor_base) * rayleigh_aletas**0.25 
 		elif(orientacion == "abajo"):
-			nusselt_aletas = 0.27 * rayleigh_aletas**0.2775
+			nusselt_aletas = 0.31 * rayleigh_aletas**0.25
 		else:
 			nusselt_aletas = 0.59 * rayleigh_aletas**0.25
 	else:
@@ -186,7 +193,7 @@ def CalculaNusselt(rayleigh_aletas,rayleigh_base,orientacion):
 
 	if rayleigh_base < 1e9:
 		if(orientacion == "arriba"):
-			nusselt_base = 0.27 * rayleigh_base**0.243
+			nusselt_base = 0.27 * rayleigh_base**0.25
 		elif(orientacion == "abajo"):
 			nusselt_base = 0.54 * rayleigh_base**0.243
 		else:
@@ -196,23 +203,24 @@ def CalculaNusselt(rayleigh_aletas,rayleigh_base,orientacion):
 
 	return nusselt_aletas, nusselt_base
 
-def CalculaCoeficienteConveccion(ancho_disipador,altura_disipador,grosor_base,longitud_disipador,grosor_aleta,N,temp_ambiente,calor_fuente_en_watts,temp_superficie_posterior,orientacion):
+def CalculaCoeficienteConveccion(ancho_disipador,altura_disipador,grosor_base,longitud_disipador,grosor_aleta,N,temp_ambiente,calor_fuente_en_watts,temp_superficie_posterior,orientacion,fuentes):
 
 	g = 9.81
 	beta = 1/(273 + temp_ambiente)
+	espacio_entre_aletas = (ancho_disipador - N * grosor_aleta)/(N-1)
 
 	dynamic_viscosity, kinematic_viscosity, thermal_conductivity, specific_heat = ExtraeInfoAire(temp_ambiente)
-	long_caracteristica_aletas = ObtenLongitudCaracteristicaAletas(altura_disipador,grosor_base,longitud_disipador)
-	long_caracteristica_base = ObtenLongitudCaracteristicaBase(ancho_disipador,longitud_disipador)
+	long_caracteristica_aletas = ObtenLongitudCaracteristicaAletas(altura_disipador,grosor_base,longitud_disipador,orientacion,espacio_entre_aletas)
+	long_caracteristica_base = ObtenLongitudCaracteristicaBase(ancho_disipador,longitud_disipador,fuentes)
 
-	grashof_aletas, grashof_base = CalculaGrashof(temp_ambiente,g,beta,long_caracteristica_aletas,kinematic_viscosity,temp_superficie_posterior,long_caracteristica_base)
+	grashof_aletas, grashof_base = CalculaGrashof(temp_ambiente,g,beta,kinematic_viscosity,temp_superficie_posterior,long_caracteristica_base,long_caracteristica_aletas)
 	prandtl = CalculaPrandtl(dynamic_viscosity,thermal_conductivity,specific_heat)
 	rayleigh_aletas, rayleigh_base = CalculaRayleigh(grashof_aletas,grashof_base,prandtl)
-	nusselt_aletas, nusselt_base = CalculaNusselt(rayleigh_aletas,rayleigh_base,orientacion)
+	nusselt_aletas, nusselt_base = CalculaNusselt(rayleigh_aletas,rayleigh_base,orientacion,espacio_entre_aletas,altura_disipador,grosor_aleta)
 
 	coeficiente_conveccion_aletas, coeficiente_conveccion_base = CalculaCoeficienteConveccionDeNusselt(thermal_conductivity,long_caracteristica_aletas,nusselt_aletas,nusselt_base,long_caracteristica_base)
-
 	if temp_superficie_posterior == temp_ambiente:
-		return 1.0, 1.0
+		return 1.0, 1.0 #Se regresa un valor constante cuando la fuente de calor es 0W. Esto para que el sistema lineal no se vuelva homogeneo.
 	else:
-		return coeficiente_conveccion_aletas, coeficiente_conveccion_base
+		return coeficiente_conveccion_aletas, 0.0
+		#return coeficiente_conveccion_aletas, coeficiente_conveccion_base
