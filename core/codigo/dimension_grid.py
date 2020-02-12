@@ -22,8 +22,8 @@ def EstableceDimensionesGrid(fuentes,ancho_x_disipador,profundo_z_disipador,gros
 	fuente_dentro = ValidaFuenteEsteDentroDeDisipador(centro_x,centro_z,ancho_x,profundo_z,ancho_x_disipador,profundo_z_disipador)
 
 	if fuente_dentro:
-		densidad_x1 = densidad_x2 = ancho_x / 2
-		densidad_z = profundo_z / 2
+		densidad_x1 = densidad_x2 = ancho_x / 3
+		densidad_z = profundo_z / 3
 
 		divisiones['num_div_x1'] = math.ceil(grosor_aleta / densidad_x1)
 		divisiones['num_div_x2'] = math.ceil(((ancho_x_disipador - N * grosor_aleta) / (N-1)) / densidad_x2)
