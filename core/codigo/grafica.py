@@ -2,11 +2,20 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
 from random import sample
+import scipy.interpolate as si
+
+matriz_z = []
+matriz_y = []
+matriz_x = []
+
+def fmt(x, y):
+    z = np.take(si.interp2d(matriz_x, matriz_y, matriz_z)(x, y), 0)
+    return 'x={x:.5f}  y={y:.5f}  z={z:.5f}'.format(x=x, y=y, z=z)
 
 def dibujaElementos(ancho_x,profundo_z,fuentes,dz,dx1,dx2,num_divisiones_x1,num_divisiones_x2,num_divisiones_z,N,areas,punto_centro,Temps_base):
 
 	fig= plt.figure()
-	ax = fig.add_axes([0.1,0.1,0.8,0.8])
+	ax = fig.add_axes([0.1,0.1,0.9,0.8])
 
 	rect = patches.Rectangle((fuentes['centro_x']-fuentes['ancho']/2,fuentes['centro_z']-fuentes['profundo']/2),fuentes['ancho'],fuentes['profundo'],linewidth=1,edgecolor='r',facecolor='none')
 
@@ -16,9 +25,9 @@ def dibujaElementos(ancho_x,profundo_z,fuentes,dz,dx1,dx2,num_divisiones_x1,num_
 	lista_scatter_x=[]
 	lista_scatter_y=[]
 	renglon_z = []
-	matriz_z = []
-	matriz_x = []
-	matriz_y = []
+	#matriz_z = []
+	#matriz_x = []
+	#matriz_y = []
 	dist_recorrida = 0
 
 	contador_z = 0
@@ -99,12 +108,14 @@ def dibujaElementos(ancho_x,profundo_z,fuentes,dz,dx1,dx2,num_divisiones_x1,num_
 
 	# print(suma)
 
-	CS = ax.contourf(matriz_x,matriz_y,matriz_z,30)
+	CS = ax.contourf(matriz_x,matriz_y,matriz_z,40)
 	#ax.clabel(CS, inline=1, fontsize=10)
 	cbar = fig.colorbar(CS)
 	cbar.ax.set_ylabel('Temperatura')
 
-	#plt.scatter(lista_scatter_x,lista_scatter_y,5)
+	plt.scatter(lista_scatter_x,lista_scatter_y,5)
 	plt.axis('equal')
+	plt.gca().format_coord = fmt
+	plt.show()
 
-	return fig
+	return
