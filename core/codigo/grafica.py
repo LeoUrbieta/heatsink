@@ -2,15 +2,6 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
 from random import sample
-import scipy.interpolate as si
-
-matriz_z = []
-matriz_y = []
-matriz_x = []
-
-def fmt(x, y):
-    z = np.take(si.interp2d(matriz_x, matriz_y, matriz_z)(x, y), 0)
-    return 'x={x:.5f}  y={y:.5f}  z={z:.5f}'.format(x=x, y=y, z=z)
 
 def dibujaElementos(ancho_x,profundo_z,fuentes,dz,dx1,dx2,num_divisiones_x1,num_divisiones_x2,num_divisiones_z,N,areas,punto_centro,Temps_base):
 
@@ -25,9 +16,9 @@ def dibujaElementos(ancho_x,profundo_z,fuentes,dz,dx1,dx2,num_divisiones_x1,num_
 	lista_scatter_x=[]
 	lista_scatter_y=[]
 	renglon_z = []
-	#matriz_z = []
-	#matriz_x = []
-	#matriz_y = []
+	matriz_z = []
+	matriz_x = []
+	matriz_y = []
 	dist_recorrida = 0
 
 	contador_z = 0
@@ -115,7 +106,6 @@ def dibujaElementos(ancho_x,profundo_z,fuentes,dz,dx1,dx2,num_divisiones_x1,num_
 
 	plt.scatter(lista_scatter_x,lista_scatter_y,5)
 	plt.axis('equal')
-	plt.gca().format_coord = fmt
 	plt.show()
 
 	return
