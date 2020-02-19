@@ -106,6 +106,5 @@ def dibujaElementos(ancho_x,profundo_z,fuentes,dz,dx1,dx2,num_divisiones_x1,num_
 
 	plt.scatter(lista_scatter_x,lista_scatter_y,5)
 	plt.axis('equal')
-	plt.show()
 
-	return
+	return fig
