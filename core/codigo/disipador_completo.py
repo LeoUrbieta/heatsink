@@ -888,7 +888,7 @@ def RealizaSimulacion(datos):
 
 	disipadores={"7.6": {"ancho": 7.6e-2,"alto": 2.2e-2,"grosor_aleta":1.5e-3,"grosor_base":2.0e-3,"num_aletas":10},
 				 "8.7": {"ancho": 8.7e-2,"alto": 3.35e-2,"grosor_aleta":2.0e-3,"grosor_base":2.5e-3,"num_aletas":8},
-				 "2.8": {"ancho": 2.8e-2,"alto": 1.14e-2,"grosor_aleta":1.5e-3,"grosor_base":2.0e-3,"num_aletas":8}
+				 "2.8": {"ancho": 2.8e-2,"alto": 1.13e-2,"grosor_aleta":1.5e-3,"grosor_base":1.85e-3,"num_aletas":8}
 				}
 	ancho_x = disipadores[datos['tipo_disipador']]['ancho']
 	alto_y = disipadores[datos['tipo_disipador']]['alto']
@@ -927,7 +927,7 @@ def RealizaSimulacion(datos):
 
 	k = 209
 	Tsur = Tinf
-	emisividad = 0.8
+	emisividad = 0.05
 	# 100 y 105 son números arbitrarios para comenzar a buscar los coeficientes de convección y radiación
 	temp_superficie_previo = 100
 	temp_superficie_posterior = 105
