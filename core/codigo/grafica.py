@@ -8,8 +8,10 @@ def dibujaElementos(ancho_x,profundo_z,fuentes,dz,dx1,dx2,num_divisiones_x1,num_
 	fig= plt.figure()
 	ax = fig.add_axes([0.1,0.1,0.9,0.8])
 
-	rect = patches.Rectangle((fuentes['centro_x']-fuentes['ancho']/2,fuentes['centro_z']-fuentes['profundo']/2),fuentes['ancho'],fuentes['profundo'],linewidth=1,edgecolor='r',facecolor='none')
-
+	for fuente in fuentes:
+		rect = patches.Rectangle((fuente[0]-fuente[2]/2,fuente[1]-fuente[3]/2),fuente[2],fuente[3],linewidth=1,edgecolor='r',facecolor='none')
+		# Add the patch to the Axes
+		ax.add_patch(rect)
 	# Add the patch to the Axes
 	ax.add_patch(rect)
 

@@ -882,6 +882,17 @@ def truncate(number, digits) -> float:
     stepper = pow(10.0, digits)
     return math.trunc(stepper * number) / stepper
 
+def CalculaAreaYPerimetroFuentes(vector_fuentes):
+
+	area_total = 0
+	perimetro_total = 0
+
+	for fuente in vector_fuentes:
+		area_total += fuente[2]*fuente[3]
+		perimetro_total += 2*fuente[2] + 2*fuente[3]
+
+	return area_total, perimetro_total
+
 def RealizaSimulacion(datos):
 
 	global num_divisiones_x1, num_divisiones_x2, num_divisiones_z, num_divisiones_y1, num_divisiones_y2, dx1, dx2, dy1, dy2, dz, altura_disipador,N, puntos_base_sin_info_adicional, h_conv_aletas, hr_aletas, k, Tinf, Tsur, h_conv_base, hr_base
@@ -909,8 +920,12 @@ def RealizaSimulacion(datos):
 	fuentes['ancho']= float(datos["ancho_x_fuente"] * 1e-3)
 	fuentes['profundo']= float(datos["profundo_z_fuente"] * 1e-3)
 
-	area_fuentes = fuentes['ancho'] * fuentes['profundo']
-	#Datos orientacion disipador
+	vector_fuentes = [[1.4e-2,22e-2,1.27e-2,5.08e-2],
+					  [1.4e-2,8.0e-2,1.27e-2,5.08e-2],
+					  [1.4e-2,14e-2,1.27e-2,5.08e-2]
+					]
+
+	area_total_fuentes, perimetro_total_fuentes = CalculaAreaYPerimetroFuentes(vector_fuentes)
 
 	tipos_de_orientacion = {}
 	tipos_de_orientacion['aletas_apuntan_arriba'] = "arriba"
@@ -921,23 +936,28 @@ def RealizaSimulacion(datos):
 
 	calor_fuente_en_watts = float(datos["calor_fuente"])
 	Tinf = float(datos["temperatura"])
-	# 0.6 emision dorado
-	# 0.8 emision negro
-	# 0.05 emision natural
+
+	divisiones_xz, fuentes_problema = dimension_grid.EstableceDimensionesGrid(vector_fuentes,ancho_x,profundo_z,grosor_aleta,N)
+
+	if divisiones_xz == None:
+		return [None,fuentes_problema]
 
 	k = 209
 	Tsur = Tinf
 	emisividad = 0.05
+	# 0.6 emision dorado
+	# 0.8 emision negro
+	# 0.05 emision natural
 	# 100 y 105 son números arbitrarios para comenzar a buscar los coeficientes de convección y radiación
 	temp_superficie_previo = 100
 	temp_superficie_posterior = 105
 
-	area_canales, area_aletas, area_base = CalculaAreaCanalesAletasYBase(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,N,area_fuentes)
+	area_canales, area_aletas, area_base = CalculaAreaCanalesAletasYBase(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,N,area_total_fuentes)
 
 	contador_iteraciones = 0
 	while(abs(temp_superficie_posterior - temp_superficie_previo) > 0.01):
 		temp_superficie_previo = temp_superficie_posterior
-		h_conv_aletas, h_conv_base = coeficiente_conveccion.CalculaCoeficienteConveccion(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,N,Tinf,calor_fuente_en_watts,temp_superficie_posterior,tipos_de_orientacion[orientacion],fuentes)
+		h_conv_aletas, h_conv_base = coeficiente_conveccion.CalculaCoeficienteConveccion(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,N,Tinf,calor_fuente_en_watts,temp_superficie_posterior,tipos_de_orientacion[orientacion],area_total_fuentes, perimetro_total_fuentes)
 		hr_aletas, hr_base = coeficiente_radiacion.CalculaCoeficienteRadiacion(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,N,Tinf,calor_fuente_en_watts,temp_superficie_posterior,area_canales,area_aletas,emisividad,area_base)
 		h_tot_aletas = h_conv_aletas + hr_aletas
 		h_tot_base = h_conv_base + hr_base
@@ -956,11 +976,6 @@ def RealizaSimulacion(datos):
 
 	q_prima = calor_fuente_en_watts / ( fuentes['ancho'] * fuentes['profundo'] )
 	#print("El calor generado por area es: ",q_prima,"W/m^2")
-
-	divisiones_xz = dimension_grid.EstableceDimensionesGrid(fuentes,ancho_x,profundo_z,grosor_aleta,N)
-
-	if divisiones_xz == None:
-		return None
 
 	num_divisiones_x1 = divisiones_xz['num_div_x1']
 	num_divisiones_x2 = divisiones_xz['num_div_x2']
@@ -1004,9 +1019,9 @@ def RealizaSimulacion(datos):
 	#print("El numero de divisiones por aleta es: ", num_divisiones_x1,"y la distancia por division es: ", dx1)
 	#print("El numero de divisiones por espacio es: ", num_divisiones_x2,"y la distancia por division es: ", dx2)
 	#print("El numero de divisiones en Z es: ", num_divisiones_z,"y la distancia por division es: ", dz)
-	fig = grafica.dibujaElementos(ancho_x,profundo_z,fuentes,dz,dx1,dx2,num_divisiones_x1,num_divisiones_x2,num_divisiones_z,N,areas,punto_centro,Temps_inversa[puntos_base_sin_info_adicional])
+	fig = grafica.dibujaElementos(ancho_x,profundo_z,vector_fuentes,dz,dx1,dx2,num_divisiones_x1,num_divisiones_x2,num_divisiones_z,N,areas,punto_centro,Temps_inversa[puntos_base_sin_info_adicional])
 
-	return fig
+	return [fig,fuentes_problema]
 
 #if __name__ == '__main__':
 #	RealizaSimulacion()

@@ -164,15 +164,12 @@ def CalculaCoeficienteConveccionDeNusselt(thermal_conductivity,long_caracteristi
 
 	return coef_aletas, coef_base
 
-def ObtenLongitudCaracteristicaBase(ancho, largo,fuentes):
+def ObtenLongitudCaracteristicaBase(ancho, largo,area_total_fuentes,perimetro_total_fuentes):
 
 	area = ancho * largo
 	perimetro = 2 * ancho + 2 * largo
 
-	area_fuente = fuentes['ancho'] * fuentes['profundo']
-	perimetro_fuentes = 2 * fuentes['ancho'] + 2 * fuentes['profundo']
-
-	long_caracteristica_efectiva_base = (area - area_fuente) / (perimetro - perimetro_fuentes)
+	long_caracteristica_efectiva_base = (area - area_total_fuentes) / (perimetro - perimetro_total_fuentes)
 
 	return long_caracteristica_efectiva_base
 
@@ -217,7 +214,7 @@ def CalculaNusselt(rayleigh_aletas,rayleigh_base,orientacion,espacio_entre_aleta
 
 	return nusselt_aletas, nusselt_base
 
-def CalculaCoeficienteConveccion(ancho_disipador,altura_disipador,grosor_base,longitud_disipador,grosor_aleta,N,temp_ambiente,calor_fuente_en_watts,temp_superficie_posterior,orientacion,fuentes):
+def CalculaCoeficienteConveccion(ancho_disipador,altura_disipador,grosor_base,longitud_disipador,grosor_aleta,N,temp_ambiente,calor_fuente_en_watts,temp_superficie_posterior,orientacion,area_total_fuentes,perimetro_total_fuentes):
 
 	g = 9.81
 	beta = 1/(273 + temp_ambiente)
@@ -225,7 +222,7 @@ def CalculaCoeficienteConveccion(ancho_disipador,altura_disipador,grosor_base,lo
 
 	dynamic_viscosity, kinematic_viscosity, thermal_conductivity, specific_heat = ExtraeInfoAire(temp_ambiente)
 	long_caracteristica_aletas = ObtenLongitudCaracteristicaAletas(altura_disipador,grosor_base,longitud_disipador,orientacion,espacio_entre_aletas,ancho_disipador)
-	long_caracteristica_base = ObtenLongitudCaracteristicaBase(ancho_disipador,longitud_disipador,fuentes)
+	long_caracteristica_base = ObtenLongitudCaracteristicaBase(ancho_disipador,longitud_disipador,area_total_fuentes, perimetro_total_fuentes)
 
 	grashof_aletas, grashof_base = CalculaGrashof(temp_ambiente,g,beta,kinematic_viscosity,temp_superficie_posterior,long_caracteristica_base,long_caracteristica_aletas)
 	prandtl = CalculaPrandtl(dynamic_viscosity,thermal_conductivity,specific_heat)
