@@ -184,19 +184,17 @@ def CalculaNusselt(rayleigh_aletas,rayleigh_base,orientacion,espacio_entre_aleta
 
 	if rayleigh_aletas < 1e9:
 		if(orientacion == "arriba"):
-			#nusselt_aletas = espacio_entre_aletas / (altura_disipador - grosor_base) * rayleigh_aletas**0.278 #2.8cm
 			if ancho == 2.8e-2:
-				nusselt_aletas = ancho / (longitud**0.005) * rayleigh_aletas**0.473 #2.8cm
+				nusselt_aletas = (ancho / longitud**0.005) * rayleigh_aletas**0.455 #2.8cm
 			elif ancho == 7.6e-2:
 				nusselt_aletas = ancho / (longitud**0.5) * rayleigh_aletas**0.277 #7.6cm
 			elif ancho == 8.7e-2:
 				nusselt_aletas = ancho / (longitud**0.25) * rayleigh_aletas**0.321 #8.7cm
-			#nusselt_aletas = espacio_entre_aletas / (altura_disipador - grosor_base) * rayleigh_aletas**0.275 #8.7cm
 			#nusselt_aletas = espacio_entre_aletas / (altura_disipador - grosor_base) * rayleigh_aletas**0.272 #13.7cm
 		elif(orientacion == "abajo"):
-			#nusselt_aletas =  espacio_entre_aletas / (altura_disipador - grosor_base) * rayleigh_aletas**0.248 #13.7cm
-			#nusselt_aletas =  espacio_entre_aletas / (altura_disipador - grosor_base) * rayleigh_aletas**0.243 #8.7cm
-			nusselt_aletas =  espacio_entre_aletas / (altura_disipador - grosor_base) * rayleigh_aletas**0.223 #7.6cm
+			if ancho == 2.8e-2:
+				nusselt_aletas = ancho / (longitud**0.175) * rayleigh_aletas**0.423 #2.8cm
+			#nusselt_aletas =  espacio_entre_aletas / (altura_disipador - grosor_base) * rayleigh_aletas**0.223 #7.6cm
 		else:
 			nusselt_aletas = 0.59 * rayleigh_aletas**0.25
 	else:
@@ -222,7 +220,7 @@ def CalculaCoeficienteConveccion(ancho_disipador,altura_disipador,grosor_base,lo
 
 	dynamic_viscosity, kinematic_viscosity, thermal_conductivity, specific_heat = ExtraeInfoAire(temp_ambiente)
 	long_caracteristica_aletas = ObtenLongitudCaracteristicaAletas(altura_disipador,grosor_base,longitud_disipador,orientacion,espacio_entre_aletas,ancho_disipador)
-	long_caracteristica_base = ObtenLongitudCaracteristicaBase(ancho_disipador,longitud_disipador,area_total_fuentes, perimetro_total_fuentes)
+	long_caracteristica_base = ObtenLongitudCaracteristicaBase(ancho_disipador,longitud_disipador,area_total_fuentes,perimetro_total_fuentes)
 
 	grashof_aletas, grashof_base = CalculaGrashof(temp_ambiente,g,beta,kinematic_viscosity,temp_superficie_posterior,long_caracteristica_base,long_caracteristica_aletas)
 	prandtl = CalculaPrandtl(dynamic_viscosity,thermal_conductivity,specific_heat)
@@ -233,4 +231,4 @@ def CalculaCoeficienteConveccion(ancho_disipador,altura_disipador,grosor_base,lo
 	if temp_superficie_posterior == temp_ambiente:
 		return 1.0, 1.0 #Se regresa un valor constante cuando la fuente de calor es 0W. Esto para que el sistema lineal no se vuelva homogeneo.
 	else:
-		return coeficiente_conveccion_aletas, 0.0#coeficiente_conveccion_base
+		return coeficiente_conveccion_aletas, coeficiente_conveccion_base
