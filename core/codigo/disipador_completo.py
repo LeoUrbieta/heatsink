@@ -917,10 +917,11 @@ def RealizaSimulacion(datos):
 	vector_fuentes = [[float(datos["centro_x_fuente"] * 1e-3),float(datos["centro_z_fuente"] * 1e-3),float(datos["ancho_x_fuente"] * 1e-3),float(datos["profundo_z_fuente"] * 1e-3),float(datos["calor_fuente"])]
 					]
 
-	vector_fuentes = [[1.4e-2,30.0e-2,1.27e-2,3.0e-2,2.25],
-					  [1.4e-2,25.0e-2,1.27e-2,3.0e-2,2.25],
-					  [1.4e-2,20.0e-2,1.27e-2,3.0e-2,2.25],
-					  [1.4e-2,15.0e-2,1.27e-2,3.0e-2,2.25]
+	vector_fuentes = [[3.8e-2,30e-2,7.6e-2,7.6e-2,70.0]
+					#  [1.4e-2,8.32e-2,1.5e-2,1.5e-2,2.25],
+					 # [1.4e-2,12.48e-2,1.5e-2,1.5e-2,2.25],
+					 # [1.4e-2,16.64e-2,1.5e-2,1.5e-2,2.25],
+					 # [1.4e-2,20.8e-2,1.5e-2,1.5e-2,2.25]
 					]
 
 	area_total_fuentes, perimetro_total_fuentes = CalculaAreaYPerimetroFuentes(vector_fuentes)
@@ -938,7 +939,7 @@ def RealizaSimulacion(datos):
 		calor_total_fuentes += fuente[4]
 	Tinf = float(datos["temperatura"])
 
-	divisiones_xz, fuentes_problema = dimension_grid.EstableceDimensionesGrid(vector_fuentes,ancho_x,profundo_z,grosor_aleta,N)
+	divisiones_xz, fuentes_problema = dimension_grid.EstableceDimensionesGrid(vector_fuentes,ancho_x,profundo_z,grosor_aleta,N,alto_y,grosor_base)
 
 	if divisiones_xz == None:
 		return [None,fuentes_problema]

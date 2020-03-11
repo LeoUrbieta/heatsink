@@ -55,7 +55,7 @@ def ValidaFuentesNoSeTraslapen(fuentes):
 			return False, fuentes_problema
 	return True, fuentes_problema
 
-def EstableceDimensionesGrid(fuentes,ancho_x_disipador,profundo_z_disipador,grosor_aleta,N):
+def EstableceDimensionesGrid(fuentes,ancho_x_disipador,profundo_z_disipador,grosor_aleta,N,alto_y_disipador,grosor_base):
 
 	divisiones = {}
 
@@ -85,8 +85,19 @@ def EstableceDimensionesGrid(fuentes,ancho_x_disipador,profundo_z_disipador,gros
 			#divisiones['num_div_x1']=4
 			#divisiones['num_div_z']=20
 
-			divisiones['num_div_y1'] = 2
-			divisiones['num_div_y2'] = 4
+			if grosor_base < 5e-3:
+				divisiones['num_div_y1'] = 2
+			elif grosor_base < 15e-3:
+				divisiones['num_div_y1'] = 4
+			else:
+				divisiones['num_div_y1'] = 6
+
+			if alto_y_disipador < 3.5e-2:
+				divisiones['num_div_y2'] = 4
+			elif alto_y_disipador < 8.0e-2:
+				divisiones['num_div_y2'] = 4
+			else:
+				divisiones['num_div_y2'] = 6
 
 			return divisiones, [0]
 		else:

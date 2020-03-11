@@ -185,7 +185,7 @@ def CalculaNusselt(rayleigh_aletas,rayleigh_base,orientacion,espacio_entre_aleta
 	if rayleigh_aletas < 1e9:
 		if(orientacion == "arriba"):
 			if ancho == 2.8e-2:
-				nusselt_aletas = (ancho / longitud**0.005) * rayleigh_aletas**0.455 #2.8cm
+				nusselt_aletas = (ancho / longitud**0.005) * rayleigh_aletas**0.430 #2.8cm
 			elif ancho == 7.6e-2:
 				nusselt_aletas = ancho / (longitud**0.5) * rayleigh_aletas**0.277 #7.6cm
 			elif ancho == 8.7e-2:
