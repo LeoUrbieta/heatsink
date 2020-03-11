@@ -313,7 +313,8 @@ def CalculaBordeEnZ(puntos_z,puntos_con_fuente_z,superior_o_inferior,puntos_base
 			else:
 				areas.append(['borde_z_frontera_der',punto,area_calor/dist_z,dist_z,area_calor])
 
-		C[puntos_base[punto][1]] = -2*(h*Tinf+hr*Tsur)/k*(area_total - area_calor) - (2 * q_prima * area_calor / k)
+		C[puntos_base[punto][1]] += 2*(h*Tinf+hr*Tsur)/k*(area_calor) - (2*q_prima*area_calor/k)
+		#C[puntos_base[punto][1]] = -2*(h*Tinf+hr*Tsur)/k*(area_total - area_calor) - (2 * q_prima * area_calor / k)
 		T[puntos_base[punto][1]][puntos_base[punto][1]] += 2*(h+hr)/k*area_calor
 
 	return
@@ -381,7 +382,8 @@ def CalculaBordeEnX(puntos_base,tipo_puntos,tipo_sobrado,puntos_con_fuente_x,dz,
 		area_calor = (dist_x + puntos_con_fuente_x[tipo_sobrado]) * dz
 
 	for punto in tipo_puntos:
-		C[puntos_base[punto][1]] = -2*(h*Tinf+hr*Tsur)/k*(area_total - area_calor) - (2 * q_prima * area_calor / k)
+		C[puntos_base[punto][1]] += 2*(h*Tinf+hr*Tsur)/k*(area_calor) - (2*q_prima*area_calor/k)
+		#C[puntos_base[punto][1]] = -2*(h*Tinf+hr*Tsur)/k*(area_total - area_calor) - (2 * q_prima * area_calor / k)
 		T[puntos_base[punto][1]][puntos_base[punto][1]] += 2*(h+hr)/k*area_calor
 		areas.append(['borde_x',punto,area_calor/dz,dz,area_calor])
 
@@ -427,7 +429,8 @@ def CalculaEsquinas(puntos_esquina,puntos_base,puntos_con_fuente_x,puntos_con_fu
 		elif puntos_con_fuente_z[p[1]] < 0 and puntos_con_fuente_x[p[2]] < 0:
 			area_calor = puntos_con_fuente_z[p[1]] * puntos_con_fuente_x[p[2]]
 
-		C[puntos_base[p[0]][1]] = -2*(h*Tinf+hr*Tsur)/k*(area_total - area_calor) - (2 * q_prima * area_calor / k)
+		C[puntos_base[p[0]][1]] += 2*(h*Tinf+hr*Tsur)/k*(area_calor) - (2*q_prima*area_calor/k)
+		#C[puntos_base[p[0]][1]] = -2*(h*Tinf+hr*Tsur)/k*(area_total - area_calor) - (2 * q_prima * area_calor / k)
 		T[puntos_base[p[0]][1]][puntos_base[p[0]][1]] += 2*(h+hr)/k*area_calor
 		areas.append(['esquina',p[0],area_calor/dz,dz,area_calor])
 
@@ -453,22 +456,33 @@ def CalculaCoeficientesdeMatriz(puntos_cubiertos,puntos_con_fuente_x,puntos_con_
 
 	return
 
-def ColocaFuentesDeCalor(divisiones,dx1,dx2,dz,fuentes,puntos_base,N,k,q_prima,h,Tinf,hr,Tsur,T,C):
+def ColocaFuentesDeCalor(divisiones,dx1,dx2,dz,vector_fuentes,puntos_base,N,k,h,Tinf,hr,Tsur,T,C):
 
-	puntos_con_fuente_de_calor = []
+	for fuente in vector_fuentes:
 
-	num_puntos_por_renglon = divisiones['num_div_x1'] * N + divisiones['num_div_x2'] * (N-1) + 1
+		fuentes = {}
+		fuentes['centro_x'] = fuente[0]
+		fuentes['centro_z']= fuente[1]
+		fuentes['ancho']= fuente[2]
+		fuentes['profundo']= fuente[3]
+		fuentes['calor'] = fuente[4]
 
-	punto_centro, punto_renglon_x, punto_columna_z = EncuentraPuntoDeGridMasCercanoACentroFuente(fuentes,divisiones,dx1,dx2,dz,num_puntos_por_renglon)
-	puntos_con_fuente_de_calor.append(punto_centro)
+		q_prima = fuentes['calor'] / ( fuentes['ancho'] * fuentes['profundo'] )
 
-	puntos_con_fuente_en_x = EncuentraPuntosConFuenteEnX(fuentes,divisiones,dx1,dx2,punto_renglon_x,num_puntos_por_renglon)
-	puntos_con_fuente_en_z = EncuentraPuntosConFuenteEnZ(fuentes,dz,punto_columna_z)
+		puntos_con_fuente_de_calor = []
 
-	puntos_con_fuentes_de_calor = EncuentraPuntosDeSuperficieCubiertosPorFuenteDeCalor(punto_renglon_x,punto_columna_z,puntos_con_fuente_en_x,puntos_con_fuente_en_z,puntos_con_fuente_de_calor,num_puntos_por_renglon)
+		num_puntos_por_renglon = divisiones['num_div_x1'] * N + divisiones['num_div_x2'] * (N-1) + 1
 
-	puntos_cubiertos,puntos_superior_z,puntos_inferior_z,puntos_izq_x,puntos_der_x = CreaListaPuntosTotalmenteCubiertos(puntos_con_fuente_en_x,puntos_con_fuente_en_z,sorted(puntos_con_fuente_de_calor))
+		punto_centro, punto_renglon_x, punto_columna_z = EncuentraPuntoDeGridMasCercanoACentroFuente(fuentes,divisiones,dx1,dx2,dz,num_puntos_por_renglon)
+		puntos_con_fuente_de_calor.append(punto_centro)
 
-	CalculaCoeficientesdeMatriz(puntos_cubiertos,puntos_con_fuente_en_x,puntos_con_fuente_en_z,puntos_superior_z,puntos_inferior_z,puntos_izq_x,puntos_der_x,puntos_base,k,q_prima,dx1,dx2,dz,h,Tinf,hr,Tsur,T,C)
+		puntos_con_fuente_en_x = EncuentraPuntosConFuenteEnX(fuentes,divisiones,dx1,dx2,punto_renglon_x,num_puntos_por_renglon)
+		puntos_con_fuente_en_z = EncuentraPuntosConFuenteEnZ(fuentes,dz,punto_columna_z)
+
+		puntos_con_fuentes_de_calor = EncuentraPuntosDeSuperficieCubiertosPorFuenteDeCalor(punto_renglon_x,punto_columna_z,puntos_con_fuente_en_x,puntos_con_fuente_en_z,puntos_con_fuente_de_calor,num_puntos_por_renglon)
+
+		puntos_cubiertos,puntos_superior_z,puntos_inferior_z,puntos_izq_x,puntos_der_x = CreaListaPuntosTotalmenteCubiertos(puntos_con_fuente_en_x,puntos_con_fuente_en_z,sorted(puntos_con_fuente_de_calor))
+
+		CalculaCoeficientesdeMatriz(puntos_cubiertos,puntos_con_fuente_en_x,puntos_con_fuente_en_z,puntos_superior_z,puntos_inferior_z,puntos_izq_x,puntos_der_x,puntos_base,k,q_prima,dx1,dx2,dz,h,Tinf,hr,Tsur,T,C)
 
 	return areas,punto_centro

@@ -106,7 +106,7 @@ def dibujaElementos(ancho_x,profundo_z,fuentes,dz,dx1,dx2,num_divisiones_x1,num_
 	cbar = fig.colorbar(CS)
 	cbar.ax.set_ylabel('Temperatura')
 
-	plt.scatter(lista_scatter_x,lista_scatter_y,5)
+	#plt.scatter(lista_scatter_x,lista_scatter_y,5)
 	plt.axis('equal')
 
 	return fig

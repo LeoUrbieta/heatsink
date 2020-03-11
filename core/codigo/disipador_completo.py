@@ -914,15 +914,13 @@ def RealizaSimulacion(datos):
 
 	#Datos fuente de calor
 
-	fuentes = {}
-	fuentes['centro_x'] = float(datos["centro_x_fuente"] * 1e-3)
-	fuentes['centro_z']= float(datos["centro_z_fuente"] * 1e-3)
-	fuentes['ancho']= float(datos["ancho_x_fuente"] * 1e-3)
-	fuentes['profundo']= float(datos["profundo_z_fuente"] * 1e-3)
+	vector_fuentes = [[float(datos["centro_x_fuente"] * 1e-3),float(datos["centro_z_fuente"] * 1e-3),float(datos["ancho_x_fuente"] * 1e-3),float(datos["profundo_z_fuente"] * 1e-3),float(datos["calor_fuente"])]
+					]
 
-	vector_fuentes = [[1.4e-2,22e-2,1.27e-2,5.08e-2],
-					  [1.4e-2,8.0e-2,1.27e-2,5.08e-2],
-					  [1.4e-2,14e-2,1.27e-2,5.08e-2]
+	vector_fuentes = [[1.4e-2,30.0e-2,1.27e-2,3.0e-2,2.25],
+					  [1.4e-2,25.0e-2,1.27e-2,3.0e-2,2.25],
+					  [1.4e-2,20.0e-2,1.27e-2,3.0e-2,2.25],
+					  [1.4e-2,15.0e-2,1.27e-2,3.0e-2,2.25]
 					]
 
 	area_total_fuentes, perimetro_total_fuentes = CalculaAreaYPerimetroFuentes(vector_fuentes)
@@ -934,7 +932,10 @@ def RealizaSimulacion(datos):
 
 	orientacion = datos["direccion_aletas"]
 
-	calor_fuente_en_watts = float(datos["calor_fuente"])
+	#calor_fuente_en_watts = float(datos["calor_fuente"])
+	calor_total_fuentes = 0.0
+	for fuente in vector_fuentes:
+		calor_total_fuentes += fuente[4]
 	Tinf = float(datos["temperatura"])
 
 	divisiones_xz, fuentes_problema = dimension_grid.EstableceDimensionesGrid(vector_fuentes,ancho_x,profundo_z,grosor_aleta,N)
@@ -957,15 +958,15 @@ def RealizaSimulacion(datos):
 	contador_iteraciones = 0
 	while(abs(temp_superficie_posterior - temp_superficie_previo) > 0.01):
 		temp_superficie_previo = temp_superficie_posterior
-		h_conv_aletas, h_conv_base = coeficiente_conveccion.CalculaCoeficienteConveccion(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,N,Tinf,calor_fuente_en_watts,temp_superficie_posterior,tipos_de_orientacion[orientacion],area_total_fuentes, perimetro_total_fuentes)
-		hr_aletas, hr_base = coeficiente_radiacion.CalculaCoeficienteRadiacion(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,N,Tinf,calor_fuente_en_watts,temp_superficie_posterior,area_canales,area_aletas,emisividad,area_base)
+		h_conv_aletas, h_conv_base = coeficiente_conveccion.CalculaCoeficienteConveccion(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,N,Tinf,calor_total_fuentes,temp_superficie_posterior,tipos_de_orientacion[orientacion],area_total_fuentes, perimetro_total_fuentes)
+		hr_aletas, hr_base = coeficiente_radiacion.CalculaCoeficienteRadiacion(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,N,Tinf,calor_total_fuentes,temp_superficie_posterior,area_canales,area_aletas,emisividad,area_base)
 		h_tot_aletas = h_conv_aletas + hr_aletas
 		h_tot_base = h_conv_base + hr_base
 		eficiencia = eficiencia_aleta.CalculaEficienciaAleta(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,h_tot_aletas,k)
 		if temp_superficie_posterior == Tinf:
 			break
 		else:
-			temp_superficie_posterior = (calor_fuente_en_watts / (h_tot_aletas * (area_canales + eficiencia * area_aletas) + h_tot_base * area_base)) + Tinf
+			temp_superficie_posterior = (calor_total_fuentes / (h_tot_aletas * (area_canales + eficiencia * area_aletas) + h_tot_base * area_base)) + Tinf
 		contador_iteraciones += 1
 		if(contador_iteraciones == 10):
 			break
@@ -974,7 +975,6 @@ def RealizaSimulacion(datos):
 
 	#print("Conveccion_aletas: " , h_conv_aletas , "Radiacion_aletas: ", hr_aletas,"Conveccion_base: " , h_conv_base , "Radiacion_base: ", hr_base, "Eficiencia: ", eficiencia, "Biot: ", biot)
 
-	q_prima = calor_fuente_en_watts / ( fuentes['ancho'] * fuentes['profundo'] )
 	#print("El calor generado por area es: ",q_prima,"W/m^2")
 
 	num_divisiones_x1 = divisiones_xz['num_div_x1']
@@ -1008,11 +1008,11 @@ def RealizaSimulacion(datos):
 
 	T, C = GeneraMatriz(num_total_de_puntos, puntos_para_bajar_z)
 
-	areas,punto_centro = fuentes_calor.ColocaFuentesDeCalor(divisiones_xz,dx1,dx2,dz,fuentes,puntos_de_base,N,k,q_prima,h_conv_base,Tinf,hr_base,Tsur,T,C)
+	areas,punto_centro = fuentes_calor.ColocaFuentesDeCalor(divisiones_xz,dx1,dx2,dz,vector_fuentes,puntos_de_base,N,k,h_conv_base,Tinf,hr_base,Tsur,T,C)
 
 	#Temps_inversa = np.linalg.solve(T,C)
 	Temps_inversa = spsolve(T,C)
-	if calor_fuente_en_watts == 0.0:
+	if calor_total_fuentes == 0.0:
 		for idx,temp in enumerate(Temps_inversa):
 			Temps_inversa[idx] = np.around(temp,2) #Esto para que redondé a Tinf todos los valores.
 	#······························#······························#······························#
