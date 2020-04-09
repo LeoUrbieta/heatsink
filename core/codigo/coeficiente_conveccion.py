@@ -212,7 +212,7 @@ def CalculaNusselt(rayleigh_aletas,rayleigh_base,orientacion,espacio_entre_aleta
 
 	return nusselt_aletas, nusselt_base
 
-def CalculaCoeficienteConveccion(ancho_disipador,altura_disipador,grosor_base,longitud_disipador,grosor_aleta,N,temp_ambiente,calor_fuente_en_watts,temp_superficie_posterior,orientacion,area_total_fuentes,perimetro_total_fuentes):
+def CalculaCoeficienteConveccion(ancho_disipador,altura_disipador,grosor_base,longitud_disipador,grosor_aleta,N,temp_ambiente,temp_superficie_posterior,orientacion,area_total_fuentes,perimetro_total_fuentes):
 
 	g = 9.81
 	beta = 1/(273 + temp_ambiente)

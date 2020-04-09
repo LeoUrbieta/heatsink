@@ -917,7 +917,7 @@ def RealizaSimulacion(datos):
 	vector_fuentes = [[float(datos["centro_x_fuente"] * 1e-3),float(datos["centro_z_fuente"] * 1e-3),float(datos["ancho_x_fuente"] * 1e-3),float(datos["profundo_z_fuente"] * 1e-3),float(datos["calor_fuente"])]
 					]
 
-	vector_fuentes = [[3.8e-2,30e-2,7.6e-2,7.6e-2,70.0]
+	vector_fuentes = [[3.8e-2,20e-2,7.6e-2,7.6e-2,84.5]
 					#  [1.4e-2,8.32e-2,1.5e-2,1.5e-2,2.25],
 					 # [1.4e-2,12.48e-2,1.5e-2,1.5e-2,2.25],
 					 # [1.4e-2,16.64e-2,1.5e-2,1.5e-2,2.25],
@@ -959,8 +959,8 @@ def RealizaSimulacion(datos):
 	contador_iteraciones = 0
 	while(abs(temp_superficie_posterior - temp_superficie_previo) > 0.01):
 		temp_superficie_previo = temp_superficie_posterior
-		h_conv_aletas, h_conv_base = coeficiente_conveccion.CalculaCoeficienteConveccion(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,N,Tinf,calor_total_fuentes,temp_superficie_posterior,tipos_de_orientacion[orientacion],area_total_fuentes, perimetro_total_fuentes)
-		hr_aletas, hr_base = coeficiente_radiacion.CalculaCoeficienteRadiacion(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,N,Tinf,calor_total_fuentes,temp_superficie_posterior,area_canales,area_aletas,emisividad,area_base)
+		h_conv_aletas, h_conv_base = coeficiente_conveccion.CalculaCoeficienteConveccion(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,N,Tinf,temp_superficie_posterior,tipos_de_orientacion[orientacion],area_total_fuentes, perimetro_total_fuentes)
+		hr_aletas, hr_base = coeficiente_radiacion.CalculaCoeficienteRadiacion(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,N,Tinf,temp_superficie_posterior,area_canales,area_aletas,emisividad,area_base)
 		h_tot_aletas = h_conv_aletas + hr_aletas
 		h_tot_base = h_conv_base + hr_base
 		eficiencia = eficiencia_aleta.CalculaEficienciaAleta(ancho_x,alto_y,grosor_base,profundo_z,grosor_aleta,h_tot_aletas,k)

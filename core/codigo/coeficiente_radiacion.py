@@ -38,7 +38,7 @@ def CalcularCalorRadiacionAletas(ancho,alto,grueso_base,largo,grueso_aleta,N,Tin
 
 	return (N - 1) * calor_canal + area_no_afectada_por_rebote_radiacion * sigma * eps * ((temp_superficie_posterior+273)**4 - (Tinf+273)**4)
 
-def CalculaCoeficienteRadiacion(ancho,alto,grueso_base,largo,grueso_aleta,N,Tinf,calor,temp_superficie_posterior,area_canales,area_aletas,emisividad,area_base):
+def CalculaCoeficienteRadiacion(ancho,alto,grueso_base,largo,grueso_aleta,N,Tinf,temp_superficie_posterior,area_canales,area_aletas,emisividad,area_base):
 
 	global eps
 
