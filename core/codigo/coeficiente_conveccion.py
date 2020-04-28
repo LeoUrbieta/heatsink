@@ -194,9 +194,11 @@ def CalculaNusselt(rayleigh_aletas,rayleigh_base,orientacion,espacio_entre_aleta
 		elif(orientacion == "abajo"):
 			if ancho == 2.8e-2:
 				nusselt_aletas = ancho / (longitud**0.175) * rayleigh_aletas**0.423 #2.8cm
+			elif ancho == 7.6e-2:
+				nusselt_aletas = ancho / (longitud**0.5) * rayleigh_aletas**0.277 #7.6cm
+			elif ancho == 8.7e-2:
+				nusselt_aletas = ancho / (longitud**0.25) * rayleigh_aletas**0.321 #8.7cm
 			#nusselt_aletas =  espacio_entre_aletas / (altura_disipador - grosor_base) * rayleigh_aletas**0.223 #7.6cm
-		else:
-			nusselt_aletas = 0.59 * rayleigh_aletas**0.25
 	else:
 		nusselt_aletas = 0.14 * rayleigh_aletas**0.33
 

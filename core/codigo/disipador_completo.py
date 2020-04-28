@@ -917,12 +917,12 @@ def RealizaSimulacion(datos):
 	vector_fuentes = [[float(datos["centro_x_fuente"] * 1e-3),float(datos["centro_z_fuente"] * 1e-3),float(datos["ancho_x_fuente"] * 1e-3),float(datos["profundo_z_fuente"] * 1e-3),float(datos["calor_fuente"])]
 					]
 
-	vector_fuentes = [[3.8e-2,20e-2,7.6e-2,7.6e-2,84.5]
+	#vector_fuentes = [[3.8e-2,20e-2,7.6e-2,7.6e-2,84.5]
 					#  [1.4e-2,8.32e-2,1.5e-2,1.5e-2,2.25],
 					 # [1.4e-2,12.48e-2,1.5e-2,1.5e-2,2.25],
 					 # [1.4e-2,16.64e-2,1.5e-2,1.5e-2,2.25],
 					 # [1.4e-2,20.8e-2,1.5e-2,1.5e-2,2.25]
-					]
+	#				]
 
 	area_total_fuentes, perimetro_total_fuentes = CalculaAreaYPerimetroFuentes(vector_fuentes)
 

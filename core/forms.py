@@ -1,7 +1,7 @@
 from django import forms
 
 class HeatSinkForm(forms.Form):
-    tipo_disipador = forms.ChoiceField(label="TipoDisipador",choices=(('2.8','2.8cm'),('7.6','7.6cm'),('8.7','8.7cm')))
+    tipo_disipador = forms.ChoiceField(label="TipoDisipador",choices=(('2.8','2.8cm'),('7.6','7.6cm')))
     longitud = forms.FloatField(label="Longitud",help_text='mm')
     direccion_aletas = forms.ChoiceField(
                         label="Direccion de Aletas",
