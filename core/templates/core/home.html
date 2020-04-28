@@ -11,7 +11,21 @@
   <!--<div>
     <a href="{% url 'drag' %}">Drag</a>
   </div>-->
-  <h2>Simulador</h2>
+  <h2>Simulador de Temperaturas</h2>
+  <h3 style="color: red">Por el momento el simulador solo trabaja en las siguientes condiciones:</h3>
+  <h4 style="color: red">
+    <ol>
+      <li>Solo están disponibles los disipadores de 2.8cm y 7.6cm</li>
+      <li>Aletas apuntan hacia arriba</li>
+      <li>Tipo de convección es convección natural (sin ventiladores, abanicos, etc.)</li>
+      <li>Disipación por radiación no considera el anodizado, por lo que la temperatura real puede ser menor</li>
+    </ol>
+  </h4>
+  <h4 style="color: green">
+    <ol>
+      <li>El calor de la fuente es el generado por tu dispositivo. No es la potencia eléctrica de consumo</li>
+    </ol>
+  </h4>
   <form action="/" method="post">
     {% csrf_token %}
     {{ form.as_p }}
