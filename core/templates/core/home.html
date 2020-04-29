@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load staticfiles %} <!-- Prepare django to load static files -->
     <title>Test plot</title>
 </head>
 <body>
@@ -27,6 +28,7 @@
       <li>El calor de la fuente es el generado por tu dispositivo. No es la potencia eléctrica de consumo</li>
     </ol>
   </h4>
+  <img src="{% static 'core/images/DIAGRAMA_RES.png'%}" alt="">
   <form action="/" method="post">
     {% csrf_token %}
     {{ form.as_p }}
